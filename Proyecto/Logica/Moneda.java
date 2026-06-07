@@ -1,3 +1,5 @@
+package Logica;
+
 /**
  * clase abstracta que representa moneda abstracta
  */

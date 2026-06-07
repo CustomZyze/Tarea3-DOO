@@ -1,3 +1,5 @@
+package Logica;
+
 /**
  * Clase abstracta que define la estructura base para cualquier artículo vendible
  * en el expendedor.

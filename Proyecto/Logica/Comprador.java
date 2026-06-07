@@ -1,3 +1,4 @@
+package Logica;
 
 /**
  * Clase que representa a un comprador dentro del sistema.

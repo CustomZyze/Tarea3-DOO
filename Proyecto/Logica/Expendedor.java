@@ -1,3 +1,5 @@
+package Logica;
+
 /**
  * Clase que representa un expendedor de productos.
  * Permite almacenar bebidas y dulces, vender productos mediante monedas

@@ -1,3 +1,5 @@
+package Logica;
+
 /**
  * Clase abstracta que representa la categoría de productos tipo dulce.
  * Sirve como nexo entre la clase general Producto y los dulces como Snickers y Super8.

@@ -1,3 +1,5 @@
+package Logica;
+
 /**
  * Excepción que se lanza cuando el pago ingresado no es válido.
  * Permite identificar el caso en que no se ingresó una moneda

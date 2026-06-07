@@ -1,3 +1,5 @@
+package Logica;
+
 /**
  * Clase abstracta que representa la categoría de productos tipo bebida.
  * Sirve como nexo entre la clase general Producto y las bebidas como CocaCola, Sprite o Fanta.

@@ -1,3 +1,5 @@
+package Logica;
+
 /**
  * Clase que representa una excepción cuando no hay producto disponible.
  * Se utiliza para indicar que el expendedor no tiene stock del producto solicitado.

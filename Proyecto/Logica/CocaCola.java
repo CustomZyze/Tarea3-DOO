@@ -1,3 +1,5 @@
+package Logica;
+
 /**
  * Clase que representa un producto de tipo CocaCola.
  * Se extiende de Bebida para heredar sus propiedades.

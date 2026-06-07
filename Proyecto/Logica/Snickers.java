@@ -1,3 +1,5 @@
+package Logica;
+
 /**
  * Clase que representa un producto de tipo Snickers.
  * Se extiende de Dulce para heredar sus propiedades.

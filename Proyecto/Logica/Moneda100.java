@@ -1,3 +1,5 @@
+package Logica;
+
 /**
  * Representa una moneda de valor 100.
  * Esta clase concreta extiende la clase abstracta Moneda

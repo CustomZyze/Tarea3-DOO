@@ -1,3 +1,5 @@
+package Logica;
+
 /**
  * Enumeración que centraliza los precios de los productos disponibles en el expendedor.
  * Cada constante define un producto específico junto con su precio de venta.
