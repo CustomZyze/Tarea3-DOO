@@ -4,14 +4,14 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class JPanelPrincipal extends JPanel implements MouseListener {
-    private JPanelExpendedor panelExpendedor;
+    private PanelExpendedor panelExpendedor;
     private JPanelBilletera  panelBilletera;
 
     public JPanelPrincipal() {
         setLayout(null);  // posicionamiento absoluto
         setBackground(Color.WHITE);
 
-        panelExpendedor = new JPanelExpendedor(50, 30, 400, 550);
+        panelExpendedor = new PanelExpendedor(50, 30, 400, 550);
         panelBilletera  = new JPanelBilletera(480, 30, 350, 550);
 
         add(panelExpendedor);
