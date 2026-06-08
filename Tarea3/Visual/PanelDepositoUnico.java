@@ -1,58 +1,27 @@
 package Visual;
-import Logica.Deposito;
 import Logica.Producto;
-import Logica.Moneda;
 import java.awt.*;
-import java.util.ArrayList;
 
-public class PanelDeposito {
+public class PanelDepositoUnico {
     private int x, y;
-    private static final int ANCHO = 75, ALTO = 340;
-    private Deposito<?> deposito;
-    private String etiqueta;
-    private Color color;
-    private ArrayList<PanelProducto> vistasProductos = new ArrayList<>();
-    private ArrayList<PanelMoneda>   vistasMonedas   = new ArrayList<>();
-    private boolean esMonedas;
+    private static final int ANCHO = 75, ALTO = 75;
+    private Producto producto;
+    private PanelProducto vistaProducto;
 
-    public PanelDeposito(int x, int y, Deposito<?> dep, String etiqueta, Color color) {
-        this.x        = x;
-        this.y        = y;
-        this.deposito = dep;
-        this.etiqueta = etiqueta;
-        this.color    = color;
-
-        // detectar si el depósito es de monedas o productos
-        this.esMonedas = etiqueta.equals("Vuelto");
-
-        actualizar();
+    public PanelDepositoUnico(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     /**
-     * Sincroniza las vistas con el contenido real del depósito.
-     * Llama a setXY en cada vista para reposicionarlas.
+     * Coloca un producto en el depósito especial y crea su vista.
      */
-    public void actualizar() {
-        vistasProductos.clear();
-        vistasMonedas.clear();
-
-        ArrayList<?> lista = deposito.getLista();
-
-        for (int i = 0; i < lista.size(); i++) {
-            // posición relativa al depósito, apilados verticalmente
-            int px = x + 5;
-            int py = y + 25 + i * 55;
-
-            Object item = lista.get(i);
-
-            if (item instanceof Moneda m) {
-                PanelMoneda pm = new PanelMoneda(px, py, m.getValor(), m.getNumSerie());
-                vistasMonedas.add(pm);
-            } else if (item instanceof Producto p) {
-                PanelProducto pp = new PanelProducto(px, py, p.getNumSerie(), color);
-                vistasProductos.add(pp);
-            }
-        }
+    public void setProducto(Producto p) {
+        this.producto = p;
+        if (p != null)
+            vistaProducto = new PanelProducto(x + 5, y + 20, p.getNumSerie(), new Color(80, 160, 80));
+        else
+            vistaProducto = null;
     }
 
     public void paintComponent(Graphics g) {
@@ -60,20 +29,19 @@ public class PanelDeposito {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // fondo del depósito (vidrio)
-        g2.setColor(new Color(200, 220, 240, 160));
+        // fondo amarillo para distinguirlo
+        g2.setColor(new Color(240, 200, 100, 200));
         g2.fillRoundRect(x, y, ANCHO, ALTO, 10, 10);
-        g2.setColor(new Color(100, 150, 200));
+        g2.setColor(new Color(180, 140, 40));
         g2.setStroke(new BasicStroke(2));
         g2.drawRoundRect(x, y, ANCHO, ALTO, 10, 10);
 
-        // etiqueta del depósito
-        g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 9));
-        g2.drawString(etiqueta, x + 2, y + 14);
+        // etiqueta
+        g2.setColor(Color.DARK_GRAY);
+        g2.setFont(new Font("Arial", Font.BOLD, 10));
+        g2.drawString("Retiro", x + 5, y + 14);
 
-        // dibujar productos o monedas
-        for (PanelProducto pp : vistasProductos) pp.paintComponent(g);
-        for (PanelMoneda   pm : vistasMonedas)   pm.paintComponent(g);
+        // dibujar producto si hay uno listo
+        if (vistaProducto != null) vistaProducto.paintComponent(g);
     }
 }
