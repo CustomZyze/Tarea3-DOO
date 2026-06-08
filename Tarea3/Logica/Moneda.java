@@ -4,17 +4,18 @@ package Logica;
  * clase abstracta que representa moneda abstracta
  */
 public abstract class Moneda implements Comparable<Moneda> {
-    /**
-     * Crea una nueva moneda.
-     */
-    public Moneda(){
-
+    private int serie;
+    public Moneda(int serie){
+        this.serie = serie;
+    }
+    public int getSerie() {
+        return this.serie;
     }
     /**
      * @return una representación en texto de la serie y el valor de la moneda.
      */
     public String toString(){
-        return "Serie: " + this.hashCode() + " | Valor: " + this.getValor();
+        return "Serie: " + this.serie + " | Valor: " + this.getValor();
     }
     /**
      * @return el valor de la moneda como entero.

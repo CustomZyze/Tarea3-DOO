@@ -11,8 +11,8 @@ public class Moneda100 extends Moneda {
      * Crea una nueva moneda de valor 100.
      * Llama al constructor de la clase padre Moneda.
      */
-    public Moneda100(){
-        super();
+    public Moneda100(int serie){
+        super(serie);
     }
 
     /**

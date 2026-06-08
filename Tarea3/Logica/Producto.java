@@ -34,4 +34,8 @@ public abstract class Producto{
     public int getSerie(){
         return serie;
     }
+    @Override
+    public String toString(){
+        return this.getClass().getSimpleName() + " [N° de Serie: " + this.serie + "]";
+    }
 }
