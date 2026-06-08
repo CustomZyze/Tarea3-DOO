@@ -29,19 +29,19 @@ public class Comprador {
      * @throws PagoInsuficienteException si el valor de la moneda no alcanza para comprar el producto.
      */
     public Comprador(Moneda m, Enumeracion cualProducto, Expendedor exp) throws PagoIncorrectoException, NoHayProductoException, PagoInsuficienteException{
-            
-        Producto p = exp.comprarProducto(m , cualProducto);
-        if( p != null){
-            this.sabor = p.consumir();
+        this.vuelto = 0;
+        try {
+            Producto p = exp.comprarProducto(m , cualProducto);
+            if( p != null){
+                this.sabor = p.consumir();
+            }
+        } finally {
+            Moneda v;
+
+            while((v = exp.getVuelto()) != null){
+                this.vuelto += v.getValor();
+            }
         }
-
-        Moneda v;
-
-        while((v = exp.getVuelto()) != null){
-            this.vuelto = vuelto +  v.getValor();
-        }
-
-
     }
 
     /**
