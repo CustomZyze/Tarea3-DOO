@@ -1,4 +1,5 @@
 package Visual;
+import Logica.Expendedor;
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,7 +10,8 @@ public class Ventana extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        JPanelPrincipal panelPrincipal = new JPanelPrincipal();
+        Expendedor expendedor = new Expendedor(5);
+        JPanelPrincipal panelPrincipal = new JPanelPrincipal(expendedor);
         add(panelPrincipal, BorderLayout.CENTER);
 
         setLocationRelativeTo(null);
