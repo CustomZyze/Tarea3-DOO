@@ -10,29 +10,35 @@ public class JPanelExpendedor extends JPanel {
     private JButton btnCancelar;
     private JLabel  lblEstado;
     private JPanelDeposito[] depositos;
+    private Image imagenFondo;
 
     public JPanelExpendedor(int x, int y, int ancho, int alto) {
         setBounds(x, y, ancho, alto);
         setLayout(null);
-        setBackground(new Color(40, 60, 80));   // color máquina
-        setBorder(BorderFactory.createLineBorder(new Color(20, 40, 60), 3));
 
-        // Panel de depósitos (vidrio interior)
-        int depX = 20, depY = 20;
+        // cargar imagen de fondo
+        try {
+            ImageIcon icon = new ImageIcon(getClass().getResource("/imagenes/expendedor_fondo.png"));
+            imagenFondo = icon.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+        } catch (Exception e) {
+            imagenFondo = null;
+        }
+
+        // depósitos
         depositos = new JPanelDeposito[3];
         for (int i = 0; i < 3; i++) {
-            depositos[i] = new JPanelDeposito(depX + i * 110, depY, 100, 280);
+            depositos[i] = new JPanelDeposito(20 + i * 110, 20, 100, 280);
             add(depositos[i]);
         }
 
-        // Label de estado (¡Compra exitosa!, etc.)
+        // label estado
         lblEstado = new JLabel("", SwingConstants.CENTER);
         lblEstado.setBounds(20, 310, ancho - 40, 40);
         lblEstado.setForeground(Color.WHITE);
         lblEstado.setFont(new Font("Arial", Font.BOLD, 14));
         add(lblEstado);
 
-        // Botón Comprar
+        // botón Comprar
         btnComprar = new JButton("Comprar");
         btnComprar.setBounds(20, 370, 160, 45);
         btnComprar.setBackground(new Color(60, 160, 80));
@@ -42,7 +48,7 @@ public class JPanelExpendedor extends JPanel {
         btnComprar.addActionListener(e -> realizarCompra());
         add(btnComprar);
 
-        // Botón Cancelar
+        // botón Cancelar
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBounds(200, 370, 160, 45);
         btnCancelar.setBackground(new Color(180, 50, 50));
@@ -52,12 +58,10 @@ public class JPanelExpendedor extends JPanel {
         btnCancelar.addActionListener(e -> cancelarCompra());
         add(btnCancelar);
 
-        // Inicializar modelo
         expendedor = new Expendedor();
     }
 
     private void realizarCompra() {
-        // lógica de compra con el modelo
         lblEstado.setText("¡Compra exitosa!");
         lblEstado.setForeground(new Color(100, 220, 100));
         actualizarDepositos();
@@ -75,9 +79,7 @@ public class JPanelExpendedor extends JPanel {
         }
     }
 
-    public void handleClick(int cx, int cy) {
-        // clicks directos sobre el panel (fuera de botones)
-    }
+    public void handleClick(int cx, int cy) {}
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -85,6 +87,15 @@ public class JPanelExpendedor extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        // aquí puedes dibujar detalles visuales extra de la máquina
+
+        if (imagenFondo != null) {
+            g2.drawImage(imagenFondo, 0, 0, this);
+        } else {
+            // fallback: rectángulo oscuro
+            g2.setColor(new Color(40, 60, 80));
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+            g2.setColor(new Color(20, 40, 60));
+            g2.drawRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+        }
     }
 }
