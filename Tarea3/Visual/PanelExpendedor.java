@@ -9,10 +9,10 @@ public class PanelExpendedor {
     private int x, y;
     private static final int ANCHO = 480, ALTO = 580;
 
-    // referencia al modelo
+
     private Expendedor expendedor;
 
-    // vistas de los depósitos (posiciones relativas al expendedor)
+    // vistas de los depósito
     private PanelDeposito depCoca;
     private PanelDeposito depSprite;
     private PanelDeposito depFanta;
@@ -39,7 +39,7 @@ public class PanelExpendedor {
             imagenFondo = null;
         }
 
-        // depósitos con posiciones relativas al expendedor (x + offset, y + offset)
+        // depósitos con posiciones relativas al expendedor
         depCoca    = new PanelDeposito(x + 10,  y + 50, exp.getCoca(),    "Coca $1000",    new Color(220, 50, 50));
         depSprite  = new PanelDeposito(x + 90,  y + 50, exp.getSprite(),  "Sprite $800",   new Color(50, 180, 50));
         depFanta   = new PanelDeposito(x + 170, y + 50, exp.getFanta(),   "Fanta $800",    new Color(255, 140, 0));
@@ -95,21 +95,7 @@ public class PanelExpendedor {
     }
 
     private void rellenarDepositosVacios() {
-        int contador = expendedor.getCoca().getLista().size();
-        for (int i = contador; i < 5; i++) expendedor.getCoca().addAlgo(new CocaCola(100 + i));
-
-        contador = expendedor.getSprite().getLista().size();
-        for (int i = contador; i < 5; i++) expendedor.getSprite().addAlgo(new Sprite(200 + i));
-
-        contador = expendedor.getFanta().getLista().size();
-        for (int i = contador; i < 5; i++) expendedor.getFanta().addAlgo(new Fanta(300 + i));
-
-        contador = expendedor.getSuper8().getLista().size();
-        for (int i = contador; i < 5; i++) expendedor.getSuper8().addAlgo(new Super8(400 + i));
-
-        contador = expendedor.getSnicker().getLista().size();
-        for (int i = contador; i < 5; i++) expendedor.getSnicker().addAlgo(new Snickers(500 + i));
-
+        expendedor.rellenarDepositos();  // delega al modelo
         actualizarDepositos();
         mensajeEstado = "Depósitos rellenados";
     }
