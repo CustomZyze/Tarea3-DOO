@@ -16,9 +16,25 @@ public class Comprador {
     private ArrayList<Moneda> monedero;
 
 
-    public Comprador() throws PagoIncorrectoException, NoHayProductoException, PagoInsuficienteException{
+    public Comprador() {
         this.monedero = new ArrayList<>();
         this.sabor = null;
+    }
+
+    public void hacerCompra(Moneda m, Enumeracion cualProducto, Expendedor exp) throws PagoIncorrectoException, NoHayProductoException, PagoInsuficienteException{
+        try {
+            exp.comprarProducto(m,cualProducto);
+            Producto p = exp.getProducto();
+
+            if (p != null){
+                this.sabor = p.consumir();
+            }
+        } finally {
+            Moneda vuelto;
+            while ((vuelto = exp.getVuelto()) != null){ //Si vamos a sacar vuelto de la maquina y no esta vacia, seguimos
+                this.monedero.add(vuelto);
+            }
+        }
     }
 
     /**
