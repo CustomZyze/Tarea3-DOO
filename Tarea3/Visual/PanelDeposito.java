@@ -45,11 +45,11 @@ public class PanelDeposito {
             Object item = lista.get(i);
 
             if (item instanceof Moneda m) {
-                PanelMoneda pm = new PanelMoneda(px, py, m.getValor(), m.getNumSerie());
+                PanelMoneda pm = new PanelMoneda(px, py, m.getValor(), m.getSerie());
                 pm.setXY(px, py); // reposicionar explícitamente
                 vistasMonedas.add(pm);
             } else if (item instanceof Producto p) {
-                PanelProducto pp = new PanelProducto(px, py, p.getNumSerie(), color);
+                PanelProducto pp = new PanelProducto(px, py, p.getSerie(), color);
                 pp.setXY(px, py); // reposicionar explícitamente
                 vistasProductos.add(pp);
             }
