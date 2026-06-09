@@ -21,7 +21,9 @@ public class Comprador {
         this.sabor = null;
     }
 
-    public void hacerCompra(Moneda m, Enumeracion cualProducto, Expendedor exp) throws PagoIncorrectoException, NoHayProductoException, PagoInsuficienteException{
+    public void hacerCompra(Moneda m, Enumeracion cualProducto, Expendedor exp)
+            throws PagoIncorrectoException, NoHayProductoException, PagoInsuficienteException{
+        this.sabor = null;
         try {
             exp.comprarProducto(m,cualProducto);
             Producto p = exp.getProducto();
