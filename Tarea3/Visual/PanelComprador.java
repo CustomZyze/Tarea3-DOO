@@ -10,6 +10,7 @@ public class PanelComprador {
     private int monedaSeleccionada = 0;
     private int saldo = 5000;
     private String mensaje = "Selecciona producto y moneda";
+    private int serieMonedas = 9000;
 
     private final int[][] zonasProductos = {
             {10, 40,  280, 45},  // COCA_COLA
@@ -179,7 +180,7 @@ public class PanelComprador {
         if (cx >= rx && cx <= rx + zonaRetiro[2] && cy >= ry && cy <= ry + zonaRetiro[3]) {
             Producto p = exp.retirarProducto();
             mensaje = p != null
-                    ? "Producto retirado: #" + p.getNumSerie()
+                    ? "Producto retirado: #" + p.getSerie()
                     : "No hay producto para retirar";
         }
     }
@@ -193,9 +194,9 @@ public class PanelComprador {
         }
 
         Moneda moneda = switch (monedaSeleccionada) {
-            case 500  -> new Moneda500();
-            case 1000 -> new Moneda1000();
-            default   -> new Moneda100();
+            case 500  -> new Moneda500(serieMonedas++);
+            case 1000 -> new Moneda1000(serieMonedas++);
+            default   -> new Moneda100(serieMonedas++);
         };
 
         saldo -= monedaSeleccionada;
