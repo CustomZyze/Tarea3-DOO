@@ -17,6 +17,9 @@ public class Expendedor {
     private Deposito<Bebida> fanta;
     private Deposito<Dulce> super8;
     private Deposito<Dulce> snicker;
+    private Deposito<Moneda> monPagadas;
+    private Producto productoComprado;
+    private int serieMonedasVuelto;
 
     /**
      * Crea los depósitos de productos y los llena con la cantidad indicada.
@@ -30,6 +33,10 @@ public class Expendedor {
         fanta = new Deposito<Bebida>();
         super8 = new Deposito<Dulce>();
         snicker = new Deposito<Dulce>();
+
+        monPagadas = new Deposito<Moneda>();
+        productoComprado = null;
+        serieMonedasVuelto = 1000;
 
         for(int i = 0 ; i < numProductos ; i++){
             coca.addAlgo(new CocaCola(100 + i));
@@ -86,12 +93,19 @@ public class Expendedor {
             throw new NoHayProductoException();
         }
 
+        monPagadas.addAlgo(m);
         int diferencia = m.getValor() - cual.getPrecio();
 
-        for(int i = 0; i < diferencia; i += 100){
-            monVu.addAlgo(new Moneda100());
+        while (diferencia >= 500) {
+            monVu.addAlgo(new Moneda500(serieMonedasVuelto));
+            serieMonedasVuelto++;
+            diferencia -= 500;
         }
-
+        while (diferencia >= 100) {
+            monVu.addAlgo(new Moneda100(serieMonedasVuelto));
+            serieMonedasVuelto++;
+            diferencia -= 100;
+        }
         return p;
     }
     /**
