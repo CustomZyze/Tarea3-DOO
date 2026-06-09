@@ -11,7 +11,7 @@ public class Ventana extends JFrame {
         setLayout(new BorderLayout());
 
         Expendedor expendedor = new Expendedor(5);
-        JPanelPrincipal panelPrincipal = new JPanelPrincipal(expendedor);
+        PanelPrincipal panelPrincipal = new PanelPrincipal(expendedor);
         add(panelPrincipal, BorderLayout.CENTER);
 
         setLocationRelativeTo(null);

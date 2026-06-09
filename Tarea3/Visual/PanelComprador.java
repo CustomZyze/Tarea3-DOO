@@ -11,7 +11,7 @@ public class PanelComprador {
     private int saldo = 5000;
     private String mensaje = "Selecciona producto y moneda";
 
-    
+
     private final int[][] zonasProductos = {
             {10, 40,  280, 45},  // COCA_COLA
             {10, 95,  280, 45},  // SPRITE
