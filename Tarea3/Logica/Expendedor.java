@@ -140,4 +140,35 @@ public class Expendedor {
     public Deposito<Moneda> getMonVu() { return monVu; }
     public Deposito<Moneda> getMonPagadas() { return monPagadas; }
     public Producto getProductoListo() { return productoComprado; }
+
+    public void rellenarDepositos(){
+        int CantRelleno = 6;
+        int factorSerie = (int)(System.currentTimeMillis() % 1000);
+
+        if (coca.getLista().isEmpty()) {
+            for (int i = 0; i < CantRelleno; i++) {
+                coca.addAlgo(new CocaCola(1000 + factorSerie + i));
+            }
+        }
+        if (sprite.getLista().isEmpty()) {
+            for (int i = 0; i < CantRelleno; i++) {
+                sprite.addAlgo(new Sprite(2000 + factorSerie + i));
+            }
+        }
+        if (fanta.getLista().isEmpty()) {
+            for (int i = 0; i < CantRelleno; i++) {
+                fanta.addAlgo(new Fanta(3000 + factorSerie + i));
+            }
+        }
+        if (super8.getLista().isEmpty()) {
+            for (int i = 0; i < CantRelleno; i++) {
+                super8.addAlgo(new Super8(4000 + factorSerie + i));
+            }
+        }
+        if (snicker.getLista().isEmpty()) {
+            for (int i = 0; i < CantRelleno; i++) {
+                snicker.addAlgo(new Snickers(5000 + factorSerie + i));
+            }
+        }
+    }
 }
