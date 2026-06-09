@@ -2,6 +2,7 @@ package Visual;
 import Logica.*;
 import java.awt.*;
 import java.util.ArrayList;
+import javax.swing.*;
 
 public class PanelExpendedor {
     // posición y tamaño dentro de PanelPrincipal
@@ -94,8 +95,23 @@ public class PanelExpendedor {
     }
 
     private void rellenarDepositosVacios() {
-        mensajeEstado = "Depósitos rellenados";
+        int contador = expendedor.getCoca().getLista().size();
+        for (int i = contador; i < 5; i++) expendedor.getCoca().addAlgo(new CocaCola(100 + i));
 
+        contador = expendedor.getSprite().getLista().size();
+        for (int i = contador; i < 5; i++) expendedor.getSprite().addAlgo(new Sprite(200 + i));
+
+        contador = expendedor.getFanta().getLista().size();
+        for (int i = contador; i < 5; i++) expendedor.getFanta().addAlgo(new Fanta(300 + i));
+
+        contador = expendedor.getSuper8().getLista().size();
+        for (int i = contador; i < 5; i++) expendedor.getSuper8().addAlgo(new Super8(400 + i));
+
+        contador = expendedor.getSnicker().getLista().size();
+        for (int i = contador; i < 5; i++) expendedor.getSnicker().addAlgo(new Snickers(500 + i));
+
+        actualizarDepositos();
+        mensajeEstado = "Depósitos rellenados";
     }
 
     /**

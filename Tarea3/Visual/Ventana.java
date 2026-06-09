@@ -19,6 +19,6 @@ public class Ventana extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Ventana());
+        new Ventana(); // solo esto en el main
     }
 }

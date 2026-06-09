@@ -40,17 +40,17 @@ public class PanelDeposito {
         ArrayList<?> lista = deposito.getLista();
 
         for (int i = 0; i < lista.size(); i++) {
-            // posición relativa al depósito, apilados verticalmente
             int px = x + 5;
             int py = y + 25 + i * 55;
-
             Object item = lista.get(i);
 
             if (item instanceof Moneda m) {
                 PanelMoneda pm = new PanelMoneda(px, py, m.getValor(), m.getNumSerie());
+                pm.setXY(px, py); // reposicionar explícitamente
                 vistasMonedas.add(pm);
             } else if (item instanceof Producto p) {
                 PanelProducto pp = new PanelProducto(px, py, p.getNumSerie(), color);
+                pp.setXY(px, py); // reposicionar explícitamente
                 vistasProductos.add(pp);
             }
         }
