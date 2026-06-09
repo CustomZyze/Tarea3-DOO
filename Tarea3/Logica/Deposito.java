@@ -27,6 +27,10 @@ public class Deposito<T> {
         lista.add(a);
     }
 
+    public ArrayList<T> getLista() {
+        return lista;
+    }
+
     /**
      * Retira y devuelve el primer objeto almacenado en el depósito.
      * @return El objeto de tipo T retirado, o null si el depósito está vacío.

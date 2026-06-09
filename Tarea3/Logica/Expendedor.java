@@ -131,4 +131,13 @@ public class Expendedor {
         this.productoComprado = null;
         return retirado;
     }
+
+    public Deposito<Bebida> getCoca() { return coca; }
+    public Deposito<Bebida> getSprite() { return sprite; }
+    public Deposito<Bebida> getFanta() { return fanta; }
+    public Deposito<Dulce> getSuper8() { return super8; }
+    public Deposito<Dulce> getSnicker() { return snicker; }
+    public Deposito<Moneda> getMonVu() { return monVu; }
+    public Deposito<Moneda> getMonPagadas() { return monPagadas; }
+    public Producto getProductoListo() { return productoComprado; }
 }
