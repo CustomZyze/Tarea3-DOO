@@ -29,4 +29,46 @@ public class PanelMoneda {
             imagen = null;
         }
     }
+
+    /**
+     * Reposiciona la moneda dentro del depósito.
+     * Se debe llamar cada vez que se agrega o saca una moneda del depósito.
+     */
+    public void setXY(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+
+        if (imagen != null) {
+            g2.drawImage(imagen, x, y, null);
+        } else {
+            // fallback: círculo de color según valor
+            Color color = switch (valor) {
+                case 100  -> new Color(200, 200, 200); // gris
+                case 500  -> new Color(210, 170, 50);  // dorado
+                case 1000 -> new Color(180, 100, 50);  // cobre
+                default   -> Color.YELLOW;
+            };
+            g2.setColor(color);
+            g2.fillOval(x, y, DIAM, DIAM);
+            g2.setColor(color.darker());
+            g2.drawOval(x, y, DIAM, DIAM);
+
+            // valor encima
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Arial", Font.BOLD, 8));
+            g2.drawString("$" + valor, x + 2, y + 18);
+        }
+
+        // número de serie como tooltip (se muestra al hacer hover en Swing)
+        // como no es JComponent usamos una alternativa: imprimirlo pequeño
+        g2.setColor(new Color(255, 255, 255, 180));
+        g2.setFont(new Font("Arial", Font.PLAIN, 7));
+        g2.drawString("#" + numSerie, x + 2, y + DIAM - 2);
+    }
 }
