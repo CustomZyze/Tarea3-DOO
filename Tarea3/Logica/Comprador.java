@@ -37,6 +37,24 @@ public class Comprador {
         }
     }
 
+    public void agregarMoneda (Moneda m){
+        if (m != null){
+            this.monedero.add(m);
+        }
+    }
+
+    public ArrayList<Moneda> getMonedero(){
+        return monedero;
+    }
+
+    public int cuantaPlata(){
+        int totalPlata = 0;
+        for (Moneda m: monedero){
+            totalPlata += m.getValor();
+        }
+        return totalPlata;
+    }
+
     /**
      * Retorna el resultado de consumir el producto comprado.
      * El valor retornado corresponde al texto entregado por el metodo consumir()
