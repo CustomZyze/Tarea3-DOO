@@ -65,7 +65,7 @@ public class PanelMoneda {
             g2.drawString("$" + valor, x + 2, y + 18);
         }
 
-        
+
         g2.setColor(new Color(255, 255, 255, 180));
         g2.setFont(new Font("Arial", Font.PLAIN, 7));
         g2.drawString("#" + numSerie, x + 2, y + DIAM - 2);
