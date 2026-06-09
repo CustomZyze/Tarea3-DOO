@@ -31,13 +31,14 @@ public class Comprador {
     public Comprador(Moneda m, Enumeracion cualProducto, Expendedor exp) throws PagoIncorrectoException, NoHayProductoException, PagoInsuficienteException{
         this.vuelto = 0;
         try {
-            Producto p = exp.comprarProducto(m , cualProducto);
+            exp.comprarProducto(m , cualProducto);
+            Producto p = exp.getProducto();
+
             if( p != null){
                 this.sabor = p.consumir();
             }
         } finally {
             Moneda v;
-
             while((v = exp.getVuelto()) != null){
                 this.vuelto += v.getValor();
             }

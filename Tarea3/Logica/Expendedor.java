@@ -19,7 +19,7 @@ public class Expendedor {
     private Deposito<Dulce> snicker;
     private Deposito<Moneda> monPagadas;
     private Producto productoComprado;
-    private int serieMonedasVuelto;
+    private int serieMonVu;
 
     /**
      * Crea los depósitos de productos y los llena con la cantidad indicada.
@@ -36,7 +36,7 @@ public class Expendedor {
 
         monPagadas = new Deposito<Moneda>();
         productoComprado = null;
-        serieMonedasVuelto = 1000;
+        serieMonVu = 1000;
 
         for(int i = 0 ; i < numProductos ; i++){
             coca.addAlgo(new CocaCola(100 + i));
@@ -62,7 +62,9 @@ public class Expendedor {
      * @throws PagoInsuficienteException si el valor de la moneda no alcanza para comprar el producto.
      * @throws NoHayProductoException si el producto solicitado no existe o no queda stock.
      */
-    public Producto comprarProducto (Moneda m , Enumeracion cual) throws NoHayProductoException, PagoIncorrectoException, PagoInsuficienteException {
+    public void comprarProducto (Moneda m , Enumeracion cual)
+            throws NoHayProductoException, PagoIncorrectoException, PagoInsuficienteException {
+
 
         if(m == null){
             throw new PagoIncorrectoException();
@@ -96,17 +98,23 @@ public class Expendedor {
         monPagadas.addAlgo(m);
         int diferencia = m.getValor() - cual.getPrecio();
 
+        while (diferencia >= 1000) {
+            monVu.addAlgo(new Moneda1000(serieMonVu));
+            serieMonVu++;
+            diferencia -= 1000;
+        }
+
         while (diferencia >= 500) {
-            monVu.addAlgo(new Moneda500(serieMonedasVuelto));
-            serieMonedasVuelto++;
+            monVu.addAlgo(new Moneda500(serieMonVu));
+            serieMonVu++;
             diferencia -= 500;
         }
         while (diferencia >= 100) {
-            monVu.addAlgo(new Moneda100(serieMonedasVuelto));
-            serieMonedasVuelto++;
+            monVu.addAlgo(new Moneda100(serieMonVu));
+            serieMonVu++;
             diferencia -= 100;
         }
-        return p;
+        this.productoComprado = p;
     }
     /**
      * Entrega una moneda del vuelto disponible.
@@ -117,5 +125,10 @@ public class Expendedor {
     public Moneda getVuelto(){
         return monVu.getAlgo();
 
+    }
+    public Producto getProducto() {
+        Producto retirado = this.productoComprado;
+        this.productoComprado = null;
+        return retirado;
     }
 }
