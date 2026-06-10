@@ -47,7 +47,7 @@ public class PanelExpendedor {
         depSnicker = new PanelDeposito(x + 330, y + 50, exp.getSnicker(), "Snickers $600", new Color(100, 60, 20));
 
         // depósito de vuelto
-        depVuelto = new PanelDeposito(x + 10, y + 430, exp.getMonVu(), "Vuelto", new Color(200, 200, 50));
+        depVuelto = new PanelDeposito(x + 10, y + 430, 300, 120, exp.getMonVu(), "Vuelto", new Color(200, 200, 50));
 
         // depósito especial: un solo producto (compra exitosa)
         depProductoListo = new PanelDepositoUnico(x + 380, y + 430);

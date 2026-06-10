@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class PanelDeposito {
     private int x, y;
-    private static final int ANCHO = 75, ALTO = 340;
+    private int ancho, alto;
     private Deposito<?> deposito;
     private String etiqueta;
     private Color color;
@@ -15,24 +15,24 @@ public class PanelDeposito {
     private ArrayList<PanelMoneda>   vistasMonedas   = new ArrayList<>();
     private boolean esMonedas;
 
+    // constructor sin tamaño (usa 75x340 por defecto)
     public PanelDeposito(int x, int y, Deposito<?> dep, String etiqueta, Color color) {
+        this(x, y, 75, 340, dep, etiqueta, color);
+    }
+
+    // constructor con tamaño personalizado
+    public PanelDeposito(int x, int y, int ancho, int alto, Deposito<?> dep, String etiqueta, Color color) {
         this.x        = x;
         this.y        = y;
+        this.ancho    = ancho;
+        this.alto     = alto;
         this.deposito = dep;
         this.etiqueta = etiqueta;
         this.color    = color;
-
-        // detectar si el depósito es de monedas o productos
-        // según la etiqueta (puedes cambiarlo si prefieres otro criterio)
         this.esMonedas = etiqueta.equals("Vuelto");
-
         actualizar();
     }
 
-    /**
-     * Sincroniza las vistas con el contenido real del depósito.
-     * Llama a setXY en cada vista para reposicionarlas.
-     */
     public void actualizar() {
         vistasProductos.clear();
         vistasMonedas.clear();
@@ -40,17 +40,19 @@ public class PanelDeposito {
         ArrayList<?> lista = deposito.getLista();
 
         for (int i = 0; i < lista.size(); i++) {
-            int px = x + 5;
-            int py = y + 25 + i * 55;
             Object item = lista.get(i);
 
             if (item instanceof Moneda m) {
+                int px = x + 5 + i * 35;  // horizontal: px cambia
+                int py = y + 45;           // vertical: py fijo
                 PanelMoneda pm = new PanelMoneda(px, py, m.getValor(), m.getSerie());
-                pm.setXY(px, py); // reposicionar explícitamente
+                pm.setXY(px, py);
                 vistasMonedas.add(pm);
             } else if (item instanceof Producto p) {
+                int px = x + 5;
+                int py = y + 25 + i * 55; // productos siguen vertical
                 PanelProducto pp = new PanelProducto(px, py, p.getSerie(), color);
-                pp.setXY(px, py); // reposicionar explícitamente
+                pp.setXY(px, py);
                 vistasProductos.add(pp);
             }
         }
@@ -61,19 +63,16 @@ public class PanelDeposito {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // fondo del depósito (vidrio)
         g2.setColor(new Color(200, 220, 240, 160));
-        g2.fillRoundRect(x, y, ANCHO, ALTO, 10, 10);
+        g2.fillRoundRect(x, y, ancho, alto, 10, 10);
         g2.setColor(new Color(100, 150, 200));
         g2.setStroke(new BasicStroke(2));
-        g2.drawRoundRect(x, y, ANCHO, ALTO, 10, 10);
+        g2.drawRoundRect(x, y, ancho, alto, 10, 10);
 
-        // etiqueta del depósito
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Arial", Font.BOLD, 9));
         g2.drawString(etiqueta, x + 2, y + 14);
 
-        // dibujar productos o monedas
         for (PanelProducto pp : vistasProductos) pp.paintComponent(g);
         for (PanelMoneda   pm : vistasMonedas)   pm.paintComponent(g);
     }
