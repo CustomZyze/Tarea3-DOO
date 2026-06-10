@@ -6,8 +6,8 @@ import javax.swing.*;
 
 public class PanelExpendedor {
     // posición y tamaño dentro de PanelPrincipal
-    private int x, y;
-    private static final int ANCHO = 480, ALTO = 580;
+    private int x, y, imgX , imgY;
+    private static final int ANCHO = 1080, ALTO = 1180;
 
 
     private Expendedor expendedor;
@@ -29,10 +29,13 @@ public class PanelExpendedor {
         this.y = y;
         this.expendedor = exp;
 
+        this.imgX = x - 230;
+        this.imgY = y - 270;
+
         // cargar imagen de fondo
         try {
             ImageIcon icon = new ImageIcon(
-                    getClass().getResource("/imagenes/expendedor_fondo.png"));
+                    getClass().getResource("/imagenes/expendedor_vacio.png"));
             imagenFondo = icon.getImage()
                     .getScaledInstance(ANCHO, ALTO, Image.SCALE_SMOOTH);
         } catch (Exception e) {
@@ -40,17 +43,17 @@ public class PanelExpendedor {
         }
 
         // depósitos con posiciones relativas al expendedor
-        depCoca    = new PanelDeposito(x + 10,  y + 50, exp.getCoca(),    "Coca $1000",    new Color(220, 50, 50));
-        depSprite  = new PanelDeposito(x + 90,  y + 50, exp.getSprite(),  "Sprite $800",   new Color(50, 180, 50));
-        depFanta   = new PanelDeposito(x + 170, y + 50, exp.getFanta(),   "Fanta $800",    new Color(255, 140, 0));
-        depSuper8  = new PanelDeposito(x + 250, y + 50, exp.getSuper8(),  "Super8 $300",   new Color(150, 80, 20));
-        depSnicker = new PanelDeposito(x + 330, y + 50, exp.getSnicker(), "Snickers $600", new Color(100, 60, 20));
+        depCoca    = new PanelDeposito(x + 20,  y + 40, exp.getCoca(),    "Coca $1000",    new Color(220, 50, 50));
+        depSprite  = new PanelDeposito(x + 20,  y + 240, exp.getSprite(),  "Sprite $800",   new Color(50, 180, 50));
+        depFanta   = new PanelDeposito(x + 20, y + 140, exp.getFanta(),   "Fanta $800",    new Color(255, 140, 0));
+        depSuper8  = new PanelDeposito(x + 20, y + 440, exp.getSuper8(),  "Super8 $300",   new Color(150, 80, 20));
+        depSnicker = new PanelDeposito(x + 20, y + 340, exp.getSnicker(), "Snickers $600", new Color(100, 60, 20));
 
         // depósito de vuelto
-        depVuelto = new PanelDeposito(x + 10, y + 430, 300, 120, exp.getMonVu(), "Vuelto", new Color(200, 200, 50));
+        depVuelto = new PanelDeposito(x + 500, y + 600, 300, 120, exp.getMonVu(), "Vuelto", new Color(200, 200, 50));
 
         // depósito especial: un solo producto (compra exitosa)
-        depProductoListo = new PanelDepositoUnico(x + 380, y + 430);
+        depProductoListo = new PanelDepositoUnico(x + 150, y + 650);
     }
 
     public void limpiarDepositoListo() {
@@ -64,7 +67,7 @@ public class PanelExpendedor {
 
         // dibujar cuerpo del expendedor
         if (imagenFondo != null) {
-            g2.drawImage(imagenFondo, x, y, null);
+            g2.drawImage(imagenFondo, imgX, imgY, null);
         } else {
             g2.setColor(new Color(40, 60, 80));
             g2.fillRoundRect(x, y, ANCHO, ALTO, 20, 20);
