@@ -1,4 +1,5 @@
 package Visual;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,26 +10,24 @@ public class PanelProducto {
     private Color color;
     private Image imagen;
 
-    public PanelProducto(int x, int y, int numSerie, Color color) {
-        this.x       = x;
-        this.y       = y;
+    public PanelProducto(int x, int y, int numSerie, Color color, String rutaImagen) {
+        this.x = x;
+        this.y = y;
         this.numSerie = numSerie;
-        this.color   = color;
+        this.color = color;
 
         try {
             ImageIcon icon = new ImageIcon(
-                    getClass().getResource("/imagenes/producto.png"));
+                    getClass().getResource(rutaImagen)
+            );
             imagen = icon.getImage()
                     .getScaledInstance(ANCHO, ALTO, Image.SCALE_SMOOTH);
         } catch (Exception e) {
+            System.out.println("No se pudo cargar imagen: " + rutaImagen);
             imagen = null;
         }
     }
 
-    /**
-     * Reposiciona el producto dentro del depósito.
-     * Se debe llamar cada vez que se agrega o saca un elemento del depósito.
-     */
     public void setXY(int x, int y) {
         this.x = x;
         this.y = y;
@@ -42,14 +41,12 @@ public class PanelProducto {
         if (imagen != null) {
             g2.drawImage(imagen, x, y, null);
         } else {
-            // fallback: rectángulo del color del producto
             g2.setColor(color);
             g2.fillRoundRect(x, y, ANCHO, ALTO, 8, 8);
             g2.setColor(color.darker());
             g2.drawRoundRect(x, y, ANCHO, ALTO, 8, 8);
         }
 
-        // número de serie encima
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Arial", Font.BOLD, 10));
         g2.drawString("#" + numSerie, x + 4, y + 28);
