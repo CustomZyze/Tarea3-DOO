@@ -5,6 +5,12 @@ import Logica.Moneda;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Representación visual de un depósito del expendedor.
+ * Puede actuar como contenedor de productos (bebidas/dulces) o como
+ * la bandeja de vuelto (monedas), sincronizando su contenido gráfico
+ * con un depósito lógico asociado.
+ */
 public class PanelDeposito {
     private int x, y;
     private int ancho, alto;
@@ -14,6 +20,7 @@ public class PanelDeposito {
     private ArrayList<PanelProducto> vistasProductos = new ArrayList<>();
     private ArrayList<PanelMoneda>   vistasMonedas   = new ArrayList<>();
     private boolean esMonedas;
+
     private String obtenerRutaImagen() {
         if (etiqueta.toLowerCase().contains("coca")) {
             return "/imagenes/coca.png";
@@ -29,12 +36,24 @@ public class PanelDeposito {
 
         return "/imagenes/producto.png";
     }
-    // constructor sin tamaño (usa 75x340 por defecto)
+
+    /**
+     * Constructor simplificado que asigna un tamaño por defecto al depósito.
+     */
     public PanelDeposito(int x, int y, Deposito<?> dep, String etiqueta, Color color) {
         this(x, y, 270, 80, dep, etiqueta, color);
     }
 
-    // constructor con tamaño personalizado
+    /**
+     * Constructor principal para crear la vista de un depósito.
+     * * @param x Coordenada X del panel.
+     * @param y Coordenada Y del panel.
+     * @param ancho Ancho del rectángulo del depósito.
+     * @param alto Alto del rectángulo del depósito.
+     * @param dep El depósito lógico que contiene los datos reales.
+     * @param etiqueta Nombre que se mostrará en la esquina del depósito.
+     * @param color Color base para los productos en caso de que no cargue la imagen.
+     */
     public PanelDeposito(int x, int y, int ancho, int alto, Deposito<?> dep, String etiqueta, Color color) {
         this.x        = x;
         this.y        = y;
@@ -45,10 +64,14 @@ public class PanelDeposito {
         this.color    = color;
         this.esMonedas = etiqueta.equals("Vuelto");
 
-
         actualizar();
     }
 
+    /**
+     * Sincroniza la vista gráfica con el estado actual del depósito lógico.
+     * Revisa la lista de elementos y genera instancias visuales (PanelProducto
+     * o PanelMoneda) calculando automáticamente su posición para que no se superpongan.
+     */
     public void actualizar() {
         vistasProductos.clear();
         vistasMonedas.clear();
@@ -60,7 +83,7 @@ public class PanelDeposito {
 
             if (item instanceof Moneda m) {
                 int px = x + 5 + i * 35;  // horizontal: px cambia
-                int py = y + 45;               // vertical: py fijo
+                int py = y + 45;          // vertical: py fijo
                 PanelMoneda pm = new PanelMoneda(px, py, m.getValor(), m.getSerie());
                 pm.setXY(px, py);
                 vistasMonedas.add(pm);
@@ -76,6 +99,11 @@ public class PanelDeposito {
         }
     }
 
+    /**
+     * Dibuja el marco del depósito, su etiqueta y delega el dibujo de cada
+     * ítem interno a sus respectivas vistas.
+     * * @param g Objeto Graphics utilizado para dibujar.
+     */
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,

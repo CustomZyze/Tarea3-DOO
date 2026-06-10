@@ -62,9 +62,9 @@ public class Expendedor {
 
     /**
      * Compra un producto del expendedor usando una moneda.
-     * Verifica que la moneda exista, que el producto solicitado sea válido,
+     * Verifica que la moneda existe, que el producto solicitado sea válido,
      * que el pago sea suficiente y que exista stock disponible. Si la compra
-     * es exitosa, retorna el producto y guarda el vuelto en monedas de 100.
+     * funciona, retorna el producto y guarda el vuelto en distintas monedas.
      * Si la compra falla, la moneda ingresada queda disponible como vuelto.
      * @param m moneda ingresada para pagar.
      * @param cual producto solicitado mediante la enumeración.
@@ -75,7 +75,6 @@ public class Expendedor {
      */
     public void comprarProducto (Moneda m , Enumeracion cual)
             throws NoHayProductoException, PagoIncorrectoException, PagoInsuficienteException {
-
 
         if(m == null){
             throw new PagoIncorrectoException();
@@ -137,6 +136,10 @@ public class Expendedor {
         return monVu.getAlgo();
 
     }
+    /**
+     * Saca el producto de la ventanilla de la máquina tras una compra exitosa.
+     * @return El producto comprado, o null si no hay producto en la ventanilla.
+     */
     public Producto getProducto() {
         Producto retirado = this.productoComprado;
         this.productoComprado = null;
@@ -152,6 +155,11 @@ public class Expendedor {
     public Deposito<Moneda> getMonPagadas() { return monPagadas; }
     public Producto getProductoListo() { return productoComprado; }
 
+    /**
+     * Rellena los depósitos de productos que se encuentren completamente vacíos.
+     * Añade 5 productos nuevos al depósito afectado, continuando con el contador
+     * de número de serie correspondiente.
+     */
     public void rellenarDepositos(){
         int CantRelleno = 5;
         int factorSerie = (int)(System.currentTimeMillis() % 1000);

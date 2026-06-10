@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 /**
  * Clase que representa a un comprador dentro del sistema.
- * El comprador intenta comprar un producto en el expendedor utilizando una moneda.
- * Si la compra se realiza correctamente, guarda el sabor o resultado de consumir
- * el producto, y también calcula el vuelto recibido.
+ * El comprador intenta comprar un producto en el expendedor utilizando su dinero (monedero),
+ *  * hacer la compra de un producto, recoger el vuelto automáticamente y
+ *  * retirar el producto de la máquina para consumirlo.
  */
 public class Comprador {
     /**
@@ -15,11 +15,26 @@ public class Comprador {
     private String sabor;
     private ArrayList<Moneda> monedero;
 
-
+    /**
+     * Constructor por defecto del Comprador.
+     * Inicializa un monedero vacío y el sabor en nulo.
+     */
     public Comprador() {
         this.monedero = new ArrayList<>();
         this.sabor = null;
     }
+    /**
+     * Intenta comprar un producto en el expendedor especificado usando una moneda.
+     * Al terminar el intento (ya sea con exito o error), el comprador recoge
+     * automáticamente el vuelto de la maquina y lo guarda en su monedero.
+     *
+     * @param m Moneda con la que se intentará pagar.
+     * @param cualProducto Enumeración que indica el tipo de producto deseado.
+     * @param exp El expendedor al cual se le realizará la transacción.
+     * @throws PagoIncorrectoException Si la moneda ingresada es nula.
+     * @throws NoHayProductoException Si el producto no existe o no queda stock en el expendedor.
+     * @throws PagoInsuficienteException Si el valor de la moneda es menor al precio del producto.
+     */
 
     public void hacerCompra(Moneda m, Enumeracion cualProducto, Expendedor exp)
             throws PagoIncorrectoException, NoHayProductoException, PagoInsuficienteException{
@@ -28,12 +43,18 @@ public class Comprador {
             exp.comprarProducto(m,cualProducto);
         } finally {
             Moneda vuelto;
-            while ((vuelto = exp.getVuelto()) != null){ //Si vamos a sacar vuelto de la maquina y no esta vacia, seguimos
+            while ((vuelto = exp.getVuelto()) != null){
                 this.monedero.add(vuelto);
             }
         }
     }
 
+    /**
+     * Retira el producto de la ventanilla de la máquina (si hay) y lo consume,
+     * guardando su sabor en la memoria del comprador.
+     *
+     * @param exp El expendedor del cual se retirará el producto.
+     */
     public void retirarProducto(Expendedor exp) {
         Producto p = exp.getProducto();
         if (p != null) {
@@ -41,12 +62,19 @@ public class Comprador {
         }
     }
 
+    /**
+     * Añade una moneda directamente al monedero del comprador.
+     */
     public void agregarMoneda (Moneda m){
         if (m != null){
             this.monedero.add(m);
         }
     }
 
+    /**
+     * Calcula la suma del valor de todas las monedas actuales en el monedero.
+     * @return El dinero total disponible.
+     */
     public ArrayList<Moneda> getMonedero(){
         return monedero;
     }
@@ -63,7 +91,7 @@ public class Comprador {
      * Retorna el resultado de consumir el producto comprado.
      * El valor retornado corresponde al texto entregado por el metodo consumir()
      * del producto comprado.
-     * @return texto asociado al producto consumido.
+     * * @return texto asociado al producto consumido.
      */
     public String queConsumiste(){
         return sabor;

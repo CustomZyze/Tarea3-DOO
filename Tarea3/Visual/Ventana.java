@@ -6,7 +6,7 @@ import java.awt.*;
 public class Ventana extends JFrame {
     public Ventana() {
         setTitle("Expendedor");
-        setSize(760, 870);
+        setSize(900, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 

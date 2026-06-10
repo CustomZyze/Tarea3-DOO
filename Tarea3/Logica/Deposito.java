@@ -27,6 +27,11 @@ public class Deposito<T> {
         lista.add(a);
     }
 
+    /**
+     * Obtiene la lista completa de elementos actuales.
+     * Útil para que la interfaz visual pueda leer y dibujar el contenido.
+     * @return La lista de objetos almacenados.
+     */
     public ArrayList<T> getLista() {
         return lista;
     }

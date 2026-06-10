@@ -1,16 +1,24 @@
 package Visual;
+
 import Logica.*;
 import java.awt.*;
-import java.util.ArrayList;
 import javax.swing.*;
 
+/**
+ * Clase que representa visualmente el expendedor dentro del panel principal.
+ * Se encarga de dibujar la imagen del expendedor, sus depósitos de productos,
+ * el depósito de vuelto y el depósito especial donde queda el producto listo
+ * para ser retirado.
+ */
 public class PanelExpendedor {
-    // posición y tamaño dentro de PanelPrincipal
-    private int x, y, imgX , imgY;
+    // posición de los depósitos y posición independiente de la imagen
+    private int x, y, imgX, imgY;
+
     private static final int ANCHO = 1080, ALTO = 1180;
+
     private Expendedor expendedor;
 
-    // vistas de los depósito
+    // vistas de los depósitos
     private PanelDeposito depCoca;
     private PanelDeposito depSprite;
     private PanelDeposito depFanta;
@@ -22,6 +30,15 @@ public class PanelExpendedor {
     private Image imagenFondo;
     private String mensajeEstado = "";
 
+    /**
+     * Constructor que inicializa el panel visual del expendedor.
+     * Recibe la posición base, el modelo lógico del expendedor y crea
+     * todos los depósitos visuales asociados.
+     *
+     * @param x coordenada horizontal base para ubicar los depósitos.
+     * @param y coordenada vertical base para ubicar los depósitos.
+     * @param exp expendedor lógico que contiene los productos, monedas y depósitos.
+     */
     public PanelExpendedor(int x, int y, Expendedor exp) {
         this.x = x;
         this.y = y;
@@ -41,23 +58,56 @@ public class PanelExpendedor {
         }
 
         // depósitos con posiciones relativas al expendedor
-        depCoca    = new PanelDeposito(x + 20,  y + 70,230, 60, exp.getCoca(),    "Coca $1000",    new Color(220, 50, 50));
-        depSprite  = new PanelDeposito(x + 20,  y + 310, 230, 60, exp.getSprite(),  "Sprite $800",   new Color(50, 180, 50));
-        depFanta   = new PanelDeposito(x + 20, y + 185,230, 60, exp.getFanta(),   "Fanta $800",    new Color(255, 140, 0));
-        depSuper8  = new PanelDeposito(x + 20, y + 500, 230, 60,exp.getSuper8(),  "Super8 $300",   new Color(150, 80, 20));
-        depSnicker = new PanelDeposito(x + 20, y + 410, 230, 60, exp.getSnicker(), "Snickers $600", new Color(100, 60, 20));
+        depCoca = new PanelDeposito(
+                x + 20, y + 70, 230, 60,
+                exp.getCoca(), "Coca $1000", new Color(220, 50, 50)
+        );
+
+        depSprite = new PanelDeposito(
+                x + 20, y + 310, 230, 60,
+                exp.getSprite(), "Sprite $800", new Color(50, 180, 50)
+        );
+
+        depFanta = new PanelDeposito(
+                x + 20, y + 185, 230, 60,
+                exp.getFanta(), "Fanta $800", new Color(255, 140, 0)
+        );
+
+        depSuper8 = new PanelDeposito(
+                x + 20, y + 500, 230, 60,
+                exp.getSuper8(), "Super8 $300", new Color(150, 80, 20)
+        );
+
+        depSnicker = new PanelDeposito(
+                x + 20, y + 410, 230, 60,
+                exp.getSnicker(), "Snickers $600", new Color(100, 60, 20)
+        );
 
         // depósito de vuelto
-        depVuelto = new PanelDeposito(x + 380, y + 600, 300, 120, exp.getMonVu(), "Vuelto", new Color(200, 200, 50));
+        depVuelto = new PanelDeposito(
+                x + 380, y + 600, 300, 120,
+                exp.getMonVu(), "Vuelto", new Color(200, 200, 50)
+        );
 
-        // depósito especial: un solo producto (compra exitosa)
+        // depósito especial: un solo producto listo para retirar
         depProductoListo = new PanelDepositoUnico(x + 150, y + 650);
     }
 
+    /**
+     * Limpia el depósito especial donde se muestra el producto listo.
+     * Se utiliza cuando el comprador retira el producto.
+     */
     public void limpiarDepositoListo() {
         depProductoListo.setProducto(null);
     }
 
+    /**
+     * Dibuja el expendedor completo en pantalla.
+     * Primero dibuja la imagen del expendedor y luego los depósitos,
+     * el producto listo, el vuelto y el mensaje de estado.
+     *
+     * @param g objeto gráfico utilizado para dibujar el expendedor.
+     */
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -85,24 +135,40 @@ public class PanelExpendedor {
         depVuelto.paintComponent(g);
         depProductoListo.paintComponent(g);
 
-        // mensaje estado
+        // mensaje de estado
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Arial", Font.BOLD, 14));
         g2.drawString(mensajeEstado, x + 380, y + 590);
     }
 
+    /**
+     * Procesa un click dentro del área del expendedor.
+     * Si el click ocurre dentro de la zona del expendedor, se rellenan
+     * los depósitos vacíos.
+     *
+     * @param cx coordenada horizontal del click.
+     * @param cy coordenada vertical del click.
+     */
     public void handleClick(int cx, int cy) {
         if (cx >= x && cx <= x + ANCHO && cy >= y && cy <= y + ALTO) {
             rellenarDepositosVacios();
         }
     }
 
+    /**
+     * Rellena los depósitos del expendedor usando el modelo lógico.
+     * Luego actualiza las vistas de los depósitos y cambia el mensaje de estado.
+     */
     private void rellenarDepositosVacios() {
-        expendedor.rellenarDepositos();  // delega al modelo
+        expendedor.rellenarDepositos();
         actualizarDepositos();
         mensajeEstado = "Depósitos rellenados";
     }
 
+    /**
+     * Actualiza visualmente todos los depósitos del expendedor.
+     * Se debe llamar cuando cambia el contenido de los depósitos.
+     */
     public void actualizarDepositos() {
         depCoca.actualizar();
         depSprite.actualizar();
@@ -112,15 +178,56 @@ public class PanelExpendedor {
         depVuelto.actualizar();
     }
 
-    public int getX()     { return x; }
-    public int getY()     { return y; }
-    public int getAncho() { return ANCHO; }
-    public int getAlto()  { return ALTO; }
+    /**
+     * Obtiene la coordenada horizontal base del expendedor.
+     *
+     * @return coordenada x del expendedor.
+     */
+    public int getX() {
+        return x;
+    }
 
+    /**
+     * Obtiene la coordenada vertical base del expendedor.
+     *
+     * @return coordenada y del expendedor.
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * Obtiene el ancho usado para escalar la imagen del expendedor.
+     *
+     * @return ancho del expendedor.
+     */
+    public int getAncho() {
+        return ANCHO;
+    }
+
+    /**
+     * Obtiene el alto usado para escalar la imagen del expendedor.
+     *
+     * @return alto del expendedor.
+     */
+    public int getAlto() {
+        return ALTO;
+    }
+
+    /**
+     * Obtiene el expendedor lógico asociado a esta vista.
+     *
+     * @return expendedor lógico usado por el panel.
+     */
     public Expendedor getExpendedor() {
         return expendedor;
     }
 
+    /**
+     * Modifica el mensaje de estado que se muestra en el expendedor.
+     *
+     * @param s nuevo mensaje de estado.
+     */
     public void setMensajeEstado(String s) {
         this.mensajeEstado = s;
     }

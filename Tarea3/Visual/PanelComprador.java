@@ -3,6 +3,11 @@ import Logica.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Representación visual del panel de control del comprador.
+ * Permite al usuario interactuar con la interfaz para seleccionar un producto,
+ * elegir una moneda del monedero para pagar, efectuar la compra y retirar el producto.
+ */
 public class PanelComprador {
     private int x, y;
     private static final int ANCHO = 200, ALTO = 680;
@@ -42,12 +47,24 @@ public class PanelComprador {
 
     private final int[] zonaRetiro = {10, 490, 280, 45};
 
+    /**
+     * Constructor que inicializa el panel interactivo del comprador.
+     * @param x Coordenada X inicial del panel.
+     * @param y Coordenada Y inicial del panel.
+     * @param comprador El modelo lógico del comprador asociado a esta vista.
+     */
     public PanelComprador(int x, int y, Comprador comprador) {
         this.x = x;
         this.y = y;
         this.comprador = comprador;
     }
 
+    /**
+     * Dibuja todos los elementos visuales del panel del comprador, incluyendo
+     * los botones de productos, las monedas disponibles, el saldo actual,
+     * los mensajes de estado y la zona de retiro.
+     * @param g Objeto Graphics utilizado para dibujar en el panel.
+     */
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -132,6 +149,14 @@ public class PanelComprador {
                 y + zonaRetiro[1] + 28);
     }
 
+    /**
+     * Detecta las interacciones del usuario (clics) dentro del panel.
+     * Identifica si el usuario hizo clic en un producto, en una moneda o en
+     * el botón de retiro, preparando los datos o ejecutando la acción final.
+     * @param cx Coordenada X del clic del mouse.
+     * @param cy Coordenada Y del clic del mouse.
+     * @param exp Referencia al panel visual del expendedor para sincronizar la interfaz y acceder a su modelo.
+     */
     public void handleClick(int cx, int cy, PanelExpendedor exp) {
         for (int i = 0; i < zonasProductos.length; i++) {
             int zx = x + zonasProductos[i][0];
@@ -178,6 +203,12 @@ public class PanelComprador {
         }
     }
 
+    /**
+     * Intenta realizar la compra de un producto utilizando la moneda y el
+     * producto previamente seleccionados. Se comunica con la lógica del sistema
+     * y maneja las excepciones, reflejando el resultado en los mensajes visuales.
+     * @param panelExp Vista del expendedor para invocar métodos lógicos y actualizar gráficos.
+     */
     private void intentarCompra(PanelExpendedor panelExp) {
         if (productoSeleccionado == null || monedaSeleccionada == 0) return;
 

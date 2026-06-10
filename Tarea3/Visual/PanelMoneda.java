@@ -1,7 +1,14 @@
 package Visual;
+
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Clase que representa visualmente una moneda dentro de la interfaz.
+ * Se encarga de cargar la imagen correspondiente según el valor de la moneda
+ * y dibujarla en pantalla. Si la imagen no se encuentra, dibuja un círculo
+ * de respaldo con un color asociado al valor.
+ */
 public class PanelMoneda {
     private int x, y;
     private static final int DIAM = 30;
@@ -9,10 +16,19 @@ public class PanelMoneda {
     private int numSerie;
     private Image imagen;
 
+    /**
+     * Constructor que inicializa la vista gráfica de una moneda.
+     * Define su posición, valor, número de serie y carga la imagen asociada.
+     *
+     * @param x coordenada horizontal donde se dibuja la moneda.
+     * @param y coordenada vertical donde se dibuja la moneda.
+     * @param valor valor monetario de la moneda.
+     * @param numSerie número de serie de la moneda.
+     */
     public PanelMoneda(int x, int y, int valor, int numSerie) {
-        this.x        = x;
-        this.y        = y;
-        this.valor    = valor;
+        this.x = x;
+        this.y = y;
+        this.valor = valor;
         this.numSerie = numSerie;
 
         String nombreImg = switch (valor) {
@@ -33,12 +49,22 @@ public class PanelMoneda {
     /**
      * Reposiciona la moneda dentro del depósito.
      * Se debe llamar cada vez que se agrega o saca una moneda del depósito.
+     *
+     * @param x nueva coordenada horizontal de la moneda.
+     * @param y nueva coordenada vertical de la moneda.
      */
     public void setXY(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Dibuja la moneda en pantalla.
+     * Si existe una imagen cargada, la dibuja. En caso contrario,
+     * dibuja un círculo de respaldo con el valor de la moneda.
+     *
+     * @param g objeto gráfico utilizado para dibujar la moneda.
+     */
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -54,8 +80,10 @@ public class PanelMoneda {
                 case 1000 -> new Color(180, 100, 50);  // cobre
                 default   -> Color.YELLOW;
             };
+
             g2.setColor(color);
             g2.fillOval(x, y, DIAM, DIAM);
+
             g2.setColor(color.darker());
             g2.drawOval(x, y, DIAM, DIAM);
 
@@ -65,7 +93,7 @@ public class PanelMoneda {
             g2.drawString("$" + valor, x + 2, y + 18);
         }
 
-
+        // número de serie
         g2.setColor(new Color(255, 255, 255, 180));
         g2.setFont(new Font("Arial", Font.PLAIN, 7));
         g2.drawString("#" + numSerie, x + 2, y + DIAM - 2);
