@@ -179,9 +179,12 @@ public class PanelComprador {
         int ry = y + zonaRetiro[1];
         if (cx >= rx && cx <= rx + zonaRetiro[2] && cy >= ry && cy <= ry + zonaRetiro[3]) {
             Producto p = exp.retirarProducto();
-            mensaje = p != null
-                    ? "Producto retirado: #" + p.getSerie()
-                    : "No hay producto para retirar";
+            if (p != null) {
+                mensaje = "Producto retirado: #" + p.getSerie();
+                exp.limpiarDepositoListo();
+            } else {
+                mensaje = "No hay producto para retirar";
+            }
         }
     }
 

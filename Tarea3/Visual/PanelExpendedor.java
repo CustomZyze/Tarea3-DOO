@@ -53,6 +53,10 @@ public class PanelExpendedor {
         depProductoListo = new PanelDepositoUnico(x + 380, y + 430);
     }
 
+    public void limpiarDepositoListo() {
+        depProductoListo.setProducto(null);
+    }
+
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
