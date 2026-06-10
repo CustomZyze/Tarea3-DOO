@@ -26,16 +26,18 @@ public class Comprador {
         this.sabor = null;
         try {
             exp.comprarProducto(m,cualProducto);
-            Producto p = exp.getProducto();
-
-            if (p != null){
-                this.sabor = p.consumir();
-            }
         } finally {
             Moneda vuelto;
             while ((vuelto = exp.getVuelto()) != null){ //Si vamos a sacar vuelto de la maquina y no esta vacia, seguimos
                 this.monedero.add(vuelto);
             }
+        }
+    }
+
+    public void retirarProducto(Expendedor exp) {
+        Producto p = exp.getProducto();
+        if (p != null) {
+            this.sabor = p.consumir();
         }
     }
 
