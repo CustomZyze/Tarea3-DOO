@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class PanelComprador {
     private int x, y;
-    private static final int ANCHO = 300, ALTO = 580;
+    private static final int ANCHO = 200, ALTO = 680;
 
     private Enumeracion productoSeleccionado = null;
     private int monedaSeleccionada = 0;

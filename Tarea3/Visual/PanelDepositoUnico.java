@@ -19,7 +19,7 @@ public class PanelDepositoUnico {
     public void setProducto(Producto p) {
         this.producto = p;
         if (p != null)
-            vistaProducto = new PanelProducto(x + 5, y + 20, p.getSerie(), new Color(80, 160, 80));
+            vistaProducto = new PanelProducto(x + 5, y + 20, p.getSerie(), new Color(80, 160, 80),"/imagenes/producto.png");
         else
             vistaProducto = null;
     }

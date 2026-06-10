@@ -14,7 +14,7 @@ public class PanelPrincipal extends JPanel implements MouseListener {
 
         // crear vistas pasando el modelo
         panelExpendedor = new PanelExpendedor(30, 30, expendedor);
-        panelComprador  = new PanelComprador(530, 30);
+        panelComprador  = new PanelComprador(417, 30);
 
         addMouseListener(this);
     }

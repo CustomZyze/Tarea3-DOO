@@ -43,14 +43,14 @@ public class PanelExpendedor {
         }
 
         // depósitos con posiciones relativas al expendedor
-        depCoca    = new PanelDeposito(x + 20,  y + 40, exp.getCoca(),    "Coca $1000",    new Color(220, 50, 50));
-        depSprite  = new PanelDeposito(x + 20,  y + 240, exp.getSprite(),  "Sprite $800",   new Color(50, 180, 50));
-        depFanta   = new PanelDeposito(x + 20, y + 140, exp.getFanta(),   "Fanta $800",    new Color(255, 140, 0));
-        depSuper8  = new PanelDeposito(x + 20, y + 440, exp.getSuper8(),  "Super8 $300",   new Color(150, 80, 20));
-        depSnicker = new PanelDeposito(x + 20, y + 340, exp.getSnicker(), "Snickers $600", new Color(100, 60, 20));
+        depCoca    = new PanelDeposito(x + 20,  y + 70,230, 60, exp.getCoca(),    "Coca $1000",    new Color(220, 50, 50));
+        depSprite  = new PanelDeposito(x + 20,  y + 310, 230, 60, exp.getSprite(),  "Sprite $800",   new Color(50, 180, 50));
+        depFanta   = new PanelDeposito(x + 20, y + 185,230, 60, exp.getFanta(),   "Fanta $800",    new Color(255, 140, 0));
+        depSuper8  = new PanelDeposito(x + 20, y + 500, 230, 60,exp.getSuper8(),  "Super8 $300",   new Color(150, 80, 20));
+        depSnicker = new PanelDeposito(x + 20, y + 410, 230, 60, exp.getSnicker(), "Snickers $600", new Color(100, 60, 20));
 
         // depósito de vuelto
-        depVuelto = new PanelDeposito(x + 500, y + 600, 300, 120, exp.getMonVu(), "Vuelto", new Color(200, 200, 50));
+        depVuelto = new PanelDeposito(x + 380, y + 600, 300, 120, exp.getMonVu(), "Vuelto", new Color(200, 200, 50));
 
         // depósito especial: un solo producto (compra exitosa)
         depProductoListo = new PanelDepositoUnico(x + 150, y + 650);
@@ -88,7 +88,7 @@ public class PanelExpendedor {
         // mensaje estado
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Arial", Font.BOLD, 14));
-        g2.drawString(mensajeEstado, x + 10, y + 420);
+        g2.drawString(mensajeEstado, x + 380, y + 590);
     }
 
     /**

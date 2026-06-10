@@ -14,7 +14,21 @@ public class PanelDeposito {
     private ArrayList<PanelProducto> vistasProductos = new ArrayList<>();
     private ArrayList<PanelMoneda>   vistasMonedas   = new ArrayList<>();
     private boolean esMonedas;
+    private String obtenerRutaImagen() {
+        if (etiqueta.toLowerCase().contains("coca")) {
+            return "/imagenes/coca.png";
+        } else if (etiqueta.toLowerCase().contains("sprite")) {
+            return "/imagenes/sprite.png";
+        } else if (etiqueta.toLowerCase().contains("fanta")) {
+            return "/imagenes/fanta.png";
+        } else if (etiqueta.toLowerCase().contains("super8")) {
+            return "/imagenes/super.png";
+        } else if (etiqueta.toLowerCase().contains("snicker")) {
+            return "/imagenes/snicker.png";
+        }
 
+        return "/imagenes/producto.png";
+    }
     // constructor sin tamaño (usa 75x340 por defecto)
     public PanelDeposito(int x, int y, Deposito<?> dep, String etiqueta, Color color) {
         this(x, y, 270, 80, dep, etiqueta, color);
@@ -30,6 +44,8 @@ public class PanelDeposito {
         this.etiqueta = etiqueta;
         this.color    = color;
         this.esMonedas = etiqueta.equals("Vuelto");
+
+
         actualizar();
     }
 
@@ -51,7 +67,9 @@ public class PanelDeposito {
             } else if (item instanceof Producto p) {
                 int px = x + 5 + i * 55;
                 int py = y + 25 ; // productos siguen vertical
-                PanelProducto pp = new PanelProducto(px, py, p.getSerie(), color);
+                String rutaImagen = obtenerRutaImagen();
+
+                PanelProducto pp = new PanelProducto(px, py, p.getSerie(), color, rutaImagen);
                 pp.setXY(px, py);
                 vistasProductos.add(pp);
             }
