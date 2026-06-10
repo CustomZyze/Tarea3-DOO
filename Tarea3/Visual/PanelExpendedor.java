@@ -8,8 +8,6 @@ public class PanelExpendedor {
     // posición y tamaño dentro de PanelPrincipal
     private int x, y, imgX , imgY;
     private static final int ANCHO = 1080, ALTO = 1180;
-
-
     private Expendedor expendedor;
 
     // vistas de los depósito
@@ -76,6 +74,8 @@ public class PanelExpendedor {
             g2.drawRoundRect(x, y, ANCHO, ALTO, 20, 20);
         }
 
+        depProductoListo.setProducto(expendedor.getProductoListo());
+
         // dibujar todos los depósitos
         depCoca.paintComponent(g);
         depSprite.paintComponent(g);
@@ -91,10 +91,6 @@ public class PanelExpendedor {
         g2.drawString(mensajeEstado, x + 380, y + 590);
     }
 
-    /**
-     * Procesa un click dentro del expendedor.
-     * Si el click fue dentro del área, rellena depósitos vacíos.
-     */
     public void handleClick(int cx, int cy) {
         if (cx >= x && cx <= x + ANCHO && cy >= y && cy <= y + ALTO) {
             rellenarDepositosVacios();
@@ -107,25 +103,7 @@ public class PanelExpendedor {
         mensajeEstado = "Depósitos rellenados";
     }
 
-    /**
-     * Realiza la compra usando el modelo, llamado desde PanelComprador.
-     */
-    public void realizarCompra(Enumeracion producto, Moneda moneda) {
-        try {
-            expendedor.comprarProducto(moneda, producto);
-            depProductoListo.setProducto(expendedor.getProductoListo());
-            mensajeEstado = "¡Compra exitosa!";
-            actualizarDepositos();
-        } catch (PagoInsuficienteException e) {
-            mensajeEstado = "Pago insuficiente";
-        } catch (NoHayProductoException e) {
-            mensajeEstado = "Sin stock";
-        } catch (PagoIncorrectoException e) {
-            mensajeEstado = "Moneda inválida";
-        }
-    }
-
-    private void actualizarDepositos() {
+    public void actualizarDepositos() {
         depCoca.actualizar();
         depSprite.actualizar();
         depFanta.actualizar();
@@ -134,11 +112,16 @@ public class PanelExpendedor {
         depVuelto.actualizar();
     }
 
-    public Moneda retirarVuelto()   { return expendedor.getVuelto(); }
-    public Producto retirarProducto() { return expendedor.getProducto(); }
-
     public int getX()     { return x; }
     public int getY()     { return y; }
     public int getAncho() { return ANCHO; }
     public int getAlto()  { return ALTO; }
+
+    public Expendedor getExpendedor() {
+        return expendedor;
+    }
+
+    public void setMensajeEstado(String s) {
+        this.mensajeEstado = s;
+    }
 }
