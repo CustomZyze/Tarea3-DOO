@@ -1,16 +1,16 @@
 package Visual;
 import Logica.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class PanelComprador {
     private int x, y;
     private static final int ANCHO = 300, ALTO = 580;
 
+    private Comprador comprador;
     private Enumeracion productoSeleccionado = null;
     private int monedaSeleccionada = 0;
-    private int saldo = 5000;
     private String mensaje = "Selecciona producto y moneda";
-    private int serieMonedas = 9000;
 
     private final int[][] zonasProductos = {
             {10, 40,  280, 45},  // COCA_COLA
@@ -40,12 +40,12 @@ public class PanelComprador {
             new Color(180, 100, 50)
     };
 
-    // zona para retirar producto del depósito especial
     private final int[] zonaRetiro = {10, 490, 280, 45};
 
-    public PanelComprador(int x, int y) {
+    public PanelComprador(int x, int y, Comprador comprador) {
         this.x = x;
         this.y = y;
+        this.comprador = comprador;
     }
 
     public void paintComponent(Graphics g) {
@@ -53,21 +53,18 @@ public class PanelComprador {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // fondo del comprador
         g2.setColor(new Color(245, 240, 220));
         g2.fillRoundRect(x, y, ANCHO, ALTO, 20, 20);
         g2.setColor(new Color(180, 160, 120));
         g2.setStroke(new BasicStroke(2));
         g2.drawRoundRect(x, y, ANCHO, ALTO, 20, 20);
 
-        // título y saldo
         g2.setColor(Color.DARK_GRAY);
         g2.setFont(new Font("Arial", Font.BOLD, 15));
         g2.drawString("Comprador", x + 10, y + 25);
         g2.setFont(new Font("Arial", Font.BOLD, 13));
-        g2.drawString("Saldo: $" + saldo, x + 170, y + 25);
+        g2.drawString("Saldo: $" + comprador.cuantaPlata(), x + 170, y + 25);
 
-        // zonas de productos
         for (int i = 0; i < zonasProductos.length; i++) {
             int zx = x + zonasProductos[i][0];
             int zy = y + zonasProductos[i][1];
@@ -91,7 +88,6 @@ public class PanelComprador {
                     zx + 8, zy + 28);
         }
 
-        // zonas de monedas
         for (int i = 0; i < zonasMonedas.length; i++) {
             int zx   = x + zonasMonedas[i][0];
             int zy   = y + zonasMonedas[i][1];
@@ -113,21 +109,17 @@ public class PanelComprador {
             g2.drawString("$" + valoresMonedas[i], zx + 6, zy + diam / 2 + 5);
         }
 
-        // línea separadora
         g2.setColor(new Color(180, 160, 120));
         g2.setStroke(new BasicStroke(1));
         g2.drawLine(x + 10, y + 420, x + ANCHO - 10, y + 420);
 
-        // mensaje estado
         g2.setColor(Color.DARK_GRAY);
         g2.setFont(new Font("Arial", Font.ITALIC, 12));
         g2.drawString(mensaje, x + 10, y + 440);
 
-        // saldo disponible
         g2.setFont(new Font("Arial", Font.BOLD, 12));
-        g2.drawString("Dinero disponible: $" + saldo, x + 10, y + 465);
+        g2.drawString("Dinero disponible: $" + comprador.cuantaPlata(), x + 10, y + 465);
 
-        // zona de retiro del producto
         g2.setColor(new Color(80, 130, 200));
         g2.fillRoundRect(x + zonaRetiro[0], y + zonaRetiro[1],
                 zonaRetiro[2], zonaRetiro[3], 10, 10);
@@ -141,7 +133,6 @@ public class PanelComprador {
     }
 
     public void handleClick(int cx, int cy, PanelExpendedor exp) {
-        // click en zona de producto
         for (int i = 0; i < zonasProductos.length; i++) {
             int zx = x + zonasProductos[i][0];
             int zy = y + zonasProductos[i][1];
@@ -156,7 +147,6 @@ public class PanelComprador {
             }
         }
 
-        // click en zona de moneda
         for (int i = 0; i < zonasMonedas.length; i++) {
             int zx    = x + zonasMonedas[i][0];
             int zy    = y + zonasMonedas[i][1];
@@ -168,19 +158,19 @@ public class PanelComprador {
             double dist = Math.sqrt(Math.pow(cx - cx0, 2) + Math.pow(cy - cy0, 2));
             if (dist <= radio) {
                 monedaSeleccionada = valoresMonedas[i];
-                mensaje = "Moneda: $" + valoresMonedas[i];
+                mensaje = "Moneda seleccionada: $" + valoresMonedas[i];
                 intentarCompra(exp);
                 return;
             }
         }
 
-        // click en zona de retiro
         int rx = x + zonaRetiro[0];
         int ry = y + zonaRetiro[1];
         if (cx >= rx && cx <= rx + zonaRetiro[2] && cy >= ry && cy <= ry + zonaRetiro[3]) {
-            Producto p = exp.retirarProducto();
-            if (p != null) {
-                mensaje = "Producto retirado: #" + p.getSerie();
+            Expendedor expMod = exp.getExpendedor();
+            if (expMod.getProductoListo() != null) {
+                comprador.retirarProducto(expMod);
+                mensaje = "Consumiste: " + comprador.queConsumiste();
                 exp.limpiarDepositoListo();
             } else {
                 mensaje = "No hay producto para retirar";
@@ -188,32 +178,49 @@ public class PanelComprador {
         }
     }
 
-    private void intentarCompra(PanelExpendedor exp) {
+    private void intentarCompra(PanelExpendedor panelExp) {
         if (productoSeleccionado == null || monedaSeleccionada == 0) return;
 
-        if (saldo < monedaSeleccionada) {
-            mensaje = "Saldo insuficiente";
+        Moneda monedaParaPagar = null;
+        ArrayList<Moneda> monedas = comprador.getMonedero();
+        for (Moneda m : monedas) {
+            if (m.getValor() == monedaSeleccionada) {
+                monedaParaPagar = m;
+                break;
+            }
+        }
+
+        if (monedaParaPagar == null) {
+            mensaje = "No tienes monedas de $" + monedaSeleccionada + " en tu monedero.";
+            productoSeleccionado = null;
+            monedaSeleccionada = 0;
             return;
         }
 
-        Moneda moneda = switch (monedaSeleccionada) {
-            case 500  -> new Moneda500(serieMonedas++);
-            case 1000 -> new Moneda1000(serieMonedas++);
-            default   -> new Moneda100(serieMonedas++);
-        };
+        monedas.remove(monedaParaPagar);
 
-        saldo -= monedaSeleccionada;
-        exp.realizarCompra(productoSeleccionado, moneda);
-
-        // recoger vuelto automáticamente
-        Moneda v;
-        while ((v = exp.retirarVuelto()) != null) {
-            saldo += v.getValor();
+        try {
+            Expendedor expModel = panelExp.getExpendedor();
+            comprador.hacerCompra(monedaParaPagar, productoSeleccionado, expModel);
+            panelExp.setMensajeEstado("¡Compra exitosa!");
+            mensaje = "Retirar Producto.";
+        } catch (PagoInsuficienteException e) {
+            panelExp.setMensajeEstado("Pago insuficiente");
+            mensaje = "Dinero insuficiente.";
+            comprador.agregarMoneda(monedaParaPagar);
+        } catch (NoHayProductoException e) {
+            panelExp.setMensajeEstado("Sin stock");
+            mensaje = "No queda stock disponible.";
+            comprador.agregarMoneda(monedaParaPagar);
+        } catch (PagoIncorrectoException e) {
+            panelExp.setMensajeEstado("Moneda inválida");
+            mensaje = "Error con la moneda.";
+            comprador.agregarMoneda(monedaParaPagar);
         }
 
+        panelExp.actualizarDepositos();
         productoSeleccionado = null;
         monedaSeleccionada   = 0;
-        mensaje = "Saldo actual: $" + saldo;
     }
 
     public int getX()     { return x; }
