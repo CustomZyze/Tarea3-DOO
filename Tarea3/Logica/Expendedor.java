@@ -21,6 +21,12 @@ public class Expendedor {
     private Producto productoComprado;
     private int serieMonVu;
 
+    private int cocaSerie;
+    private int spriteSerie;
+    private int fantaSerie;
+    private int super8Serie;
+    private int snickerSerie;
+
     /**
      * Crea los depósitos de productos y los llena con la cantidad indicada.
      * Cada producto se inicializa con un número de serie distinto.
@@ -46,6 +52,11 @@ public class Expendedor {
             snicker.addAlgo(new Snickers(500 + i));
 
         }
+        cocaSerie = 100 + numProductos;
+        spriteSerie = 200 + numProductos;
+        fantaSerie = 300 + numProductos;
+        super8Serie = 400 + numProductos;
+        snickerSerie = 500 + numProductos;
 
     }
 
@@ -142,32 +153,37 @@ public class Expendedor {
     public Producto getProductoListo() { return productoComprado; }
 
     public void rellenarDepositos(){
-        int CantRelleno = 6;
+        int CantRelleno = 5;
         int factorSerie = (int)(System.currentTimeMillis() % 1000);
 
         if (coca.getLista().isEmpty()) {
             for (int i = 0; i < CantRelleno; i++) {
-                coca.addAlgo(new CocaCola(1000 + factorSerie + i));
+                coca.addAlgo(new CocaCola(cocaSerie));
+                cocaSerie++;
             }
         }
         if (sprite.getLista().isEmpty()) {
             for (int i = 0; i < CantRelleno; i++) {
-                sprite.addAlgo(new Sprite(2000 + factorSerie + i));
+                sprite.addAlgo(new Sprite(spriteSerie));
+                spriteSerie++;
             }
         }
         if (fanta.getLista().isEmpty()) {
             for (int i = 0; i < CantRelleno; i++) {
-                fanta.addAlgo(new Fanta(3000 + factorSerie + i));
+                fanta.addAlgo(new Fanta(fantaSerie));
+                fantaSerie++;
             }
         }
         if (super8.getLista().isEmpty()) {
             for (int i = 0; i < CantRelleno; i++) {
-                super8.addAlgo(new Super8(4000 + factorSerie + i));
+                super8.addAlgo(new Super8(super8Serie));
+                super8Serie++;
             }
         }
         if (snicker.getLista().isEmpty()) {
             for (int i = 0; i < CantRelleno; i++) {
-                snicker.addAlgo(new Snickers(5000 + factorSerie + i));
+                snicker.addAlgo(new Snickers(snickerSerie));
+                snickerSerie++;
             }
         }
     }
