@@ -23,16 +23,12 @@ public class PanelPrincipal extends JPanel implements MouseListener {
     public PanelPrincipal(Expendedor expendedor) {
         Comprador comprador = new Comprador();
 
-        for (int i = 0; i < 5; i++) {
-            comprador.agregarMoneda(new Moneda1000(9000 + i));
-        }
-
-        setBackground(Color.WHITE);
+        setBackground(new Color(85,85,85));
         setLayout(null);
 
         // crear vistas pasando los modelos lógicos
         panelExpendedor = new PanelExpendedor(30, 30, expendedor);
-        panelComprador  = new PanelComprador(530, 30, comprador);
+        panelComprador  = new PanelComprador(730, 30, comprador);
 
         addMouseListener(this);
     }

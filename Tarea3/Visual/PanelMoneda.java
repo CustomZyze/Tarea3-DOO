@@ -11,7 +11,7 @@ import java.awt.*;
  */
 public class PanelMoneda {
     private int x, y;
-    private static final int DIAM = 30;
+    private int DIAM = 45;
     private int valor;
     private int numSerie;
     private Image imagen;
@@ -40,10 +40,14 @@ public class PanelMoneda {
 
         try {
             ImageIcon icon = new ImageIcon(getClass().getResource(nombreImg));
-            imagen = icon.getImage().getScaledInstance(DIAM, DIAM, Image.SCALE_SMOOTH);
+            imagen = icon.getImage();
         } catch (Exception e) {
             imagen = null;
         }
+    }
+
+    public void setDiametro(int nuevoDiam){
+        this.DIAM = nuevoDiam;
     }
 
     /**
@@ -94,8 +98,10 @@ public class PanelMoneda {
         }
 
         // número de serie
-        g2.setColor(new Color(255, 255, 255, 180));
-        g2.setFont(new Font("Arial", Font.PLAIN, 7));
-        g2.drawString("#" + numSerie, x + 2, y + DIAM - 2);
+        if (numSerie > 0) {
+            g2.setColor(new Color(0, 0, 0, 180));
+            g2.setFont(new Font("Arial", Font.PLAIN, 12));
+            g2.drawString("#" + numSerie, x + 7, y);
+        }
     }
 }

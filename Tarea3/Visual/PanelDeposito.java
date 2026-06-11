@@ -82,14 +82,14 @@ public class PanelDeposito {
             Object item = lista.get(i);
 
             if (item instanceof Moneda m) {
-                int px = x + 5 + i * 35;  // horizontal: px cambia
-                int py = y + 45;          // vertical: py fijo
+                int px = x + 15 + (i%5) * 75;
+                int py = y+ 35 + (i/5) * 50;
                 PanelMoneda pm = new PanelMoneda(px, py, m.getValor(), m.getSerie());
                 pm.setXY(px, py);
                 vistasMonedas.add(pm);
             } else if (item instanceof Producto p) {
-                int px = x + 5 + i * 55;
-                int py = y + 25 ; // productos siguen vertical
+                int px = x + 9 + i * 30;
+                int py = y + 15 ;
                 String rutaImagen = obtenerRutaImagen();
 
                 PanelProducto pp = new PanelProducto(px, py, p.getSerie(), color, rutaImagen);
