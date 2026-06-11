@@ -10,7 +10,12 @@ import java.util.ArrayList;
  */
 public class PanelComprador {
     private int x, y;
-    private static final int ANCHO = 200, ALTO = 680;
+    private static final int ANCHO = 300, ALTO = 880;
+    private ArrayList<PanelMoneda> vistasMonedas = new ArrayList<>();
+
+    private PanelMoneda btn100;
+    private PanelMoneda btn500;
+    private PanelMoneda btn1000;
 
     private Comprador comprador;
     private Enumeracion productoSeleccionado = null;
@@ -18,11 +23,11 @@ public class PanelComprador {
     private String mensaje = "Selecciona producto y moneda";
 
     private final int[][] zonasProductos = {
-            {10, 40,  280, 45},  // COCA_COLA
-            {10, 95,  280, 45},  // SPRITE
-            {10, 150, 280, 45},  // FANTA
-            {10, 205, 280, 45},  // SUPER8
-            {10, 260, 280, 45},  // SNICKERS
+            {10, 40,  280, 45},
+            {10, 95,  280, 45},
+            {10, 150, 280, 45},
+            {10, 205, 280, 45},
+            {10, 260, 280, 45},
     };
     private final Enumeracion[] productos = Enumeracion.values();
     private final Color[] coloresProductos = {
@@ -34,9 +39,9 @@ public class PanelComprador {
     };
 
     private final int[][] zonasMonedas = {
-            {10,  330, 70},
-            {100, 330, 70},
-            {190, 330, 70},
+            {10,  330, 65},
+            {100, 330, 65},
+            {190, 330, 65},
     };
     private final int[] valoresMonedas = {100, 500, 1000};
     private final Color[] coloresMonedas = {
@@ -45,6 +50,7 @@ public class PanelComprador {
             new Color(180, 100, 50)
     };
 
+    private final int[] zonaRecarga = {10, 550, 280, 45};
     private final int[] zonaRetiro = {10, 490, 280, 45};
 
     /**
@@ -57,6 +63,25 @@ public class PanelComprador {
         this.x = x;
         this.y = y;
         this.comprador = comprador;
+
+        btn100  = new PanelMoneda(x + zonasMonedas[0][0], y + zonasMonedas[0][1], 100, 0);
+        btn500  = new PanelMoneda(x + zonasMonedas[1][0], y + zonasMonedas[1][1], 500, 0);
+        btn1000 = new PanelMoneda(x + zonasMonedas[2][0], y + zonasMonedas[2][1], 1000, 0);
+
+        btn100.setDiametro(70);
+        btn500.setDiametro(70);
+        btn1000.setDiametro(70);
+    }
+
+    private void actualizarVistasMonedas() {
+        vistasMonedas.clear();
+        ArrayList<Moneda> monedero = comprador.getMonedero();
+        for (int i = 0; i < monedero.size(); i++) {
+            Moneda m = monedero.get(i);
+            int px = x + 10 + (i % 5) * 50;  // 8 monedas por fila
+            int py = y + 624 + (i / 5) * 55;  // nueva fila cada 8
+            vistasMonedas.add(new PanelMoneda(px, py, m.getValor(), m.getSerie()));
+        }
     }
 
     /**
@@ -112,18 +137,15 @@ public class PanelComprador {
 
             boolean seleccionado = monedaSeleccionada == valoresMonedas[i];
 
-            g2.setColor(seleccionado
-                    ? coloresMonedas[i].brighter()
-                    : coloresMonedas[i]);
-            g2.fillOval(zx, zy, diam, diam);
+            if (i == 0) btn100.paintComponent(g);
+            if (i == 1) btn500.paintComponent(g);
+            if (i == 2) btn1000.paintComponent(g);
 
-            g2.setColor(seleccionado ? Color.YELLOW : Color.DARK_GRAY);
-            g2.setStroke(new BasicStroke(seleccionado ? 2.5f : 1));
-            g2.drawOval(zx, zy, diam, diam);
-
-            g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Arial", Font.BOLD, 12));
-            g2.drawString("$" + valoresMonedas[i], zx + 6, zy + diam / 2 + 5);
+            if (seleccionado) {
+                g2.setColor(Color.YELLOW);
+                g2.setStroke(new BasicStroke(3));
+                g2.drawOval(zx - 3, zy - 3, diam + 6, diam + 6);
+            }
         }
 
         g2.setColor(new Color(180, 160, 120));
@@ -147,6 +169,22 @@ public class PanelComprador {
         g2.setFont(new Font("Arial", Font.BOLD, 13));
         g2.drawString("Retirar producto", x + zonaRetiro[0] + 8,
                 y + zonaRetiro[1] + 28);
+
+        // botón recarga
+        g2.setColor(new Color(140, 180, 140));
+        g2.fillRoundRect(x + zonaRecarga[0], y + zonaRecarga[1], zonaRecarga[2], zonaRecarga[3], 10, 10);
+        g2.setColor(Color.WHITE);
+        g2.drawRoundRect(x + zonaRecarga[0], y + zonaRecarga[1], zonaRecarga[2], zonaRecarga[3], 10, 10);
+        g2.drawString("+ Añadir Moneda $1000", x + zonaRecarga[0] + 70, y + zonaRecarga[1] + 28);
+
+        // monedas del monedero
+        actualizarVistasMonedas();
+        g2.setFont(new Font("Arial", Font.BOLD, 15));
+        g2.setColor(Color.DARK_GRAY);
+        g2.drawString("Monedero:", x + 10, y + 608);
+        for (PanelMoneda pm : vistasMonedas) {
+            pm.paintComponent(g);
+        }
     }
 
     /**
@@ -194,13 +232,23 @@ public class PanelComprador {
         if (cx >= rx && cx <= rx + zonaRetiro[2] && cy >= ry && cy <= ry + zonaRetiro[3]) {
             Expendedor expMod = exp.getExpendedor();
             if (expMod.getProductoListo() != null) {
+                Producto p = expMod.getProductoListo();
                 comprador.retirarProducto(expMod);
-                mensaje = "Consumiste: " + comprador.queConsumiste();
+                mensaje = "Consumiste: " + comprador.queConsumiste() + " #" + p.getSerie();
                 exp.limpiarDepositoListo();
+                exp.actualizarDepositos();
             } else {
                 mensaje = "No hay producto para retirar";
             }
+            return;
         }
+        int tx = x + zonaRecarga[0];
+        int ty = y + zonaRecarga[1];
+        if (cx >= tx && cx <= tx + zonaRecarga[2] && cy >= ty && cy <= ty + zonaRecarga[3]) {
+            comprador.recargarMonedero();
+            mensaje = "Moneda añadida al monedero";
+        }
+
     }
 
     /**
@@ -212,23 +260,14 @@ public class PanelComprador {
     private void intentarCompra(PanelExpendedor panelExp) {
         if (productoSeleccionado == null || monedaSeleccionada == 0) return;
 
-        Moneda monedaParaPagar = null;
-        ArrayList<Moneda> monedas = comprador.getMonedero();
-        for (Moneda m : monedas) {
-            if (m.getValor() == monedaSeleccionada) {
-                monedaParaPagar = m;
-                break;
-            }
-        }
+        Moneda monedaParaPagar = comprador.sacarMoneda(monedaSeleccionada);
 
         if (monedaParaPagar == null) {
-            mensaje = "No tienes monedas de $" + monedaSeleccionada + " en tu monedero.";
+            mensaje = "No tienes monedas de $" + monedaSeleccionada;
             productoSeleccionado = null;
             monedaSeleccionada = 0;
             return;
         }
-
-        monedas.remove(monedaParaPagar);
 
         try {
             Expendedor expModel = panelExp.getExpendedor();
