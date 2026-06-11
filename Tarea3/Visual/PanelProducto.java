@@ -10,7 +10,7 @@ import java.awt.*;
  */
 public class PanelProducto {
     private int x, y;
-    private static final int ANCHO = 65, ALTO = 48;
+    private static final int ANCHO = 45, ALTO = 48;
     private int numSerie;
     private Color color;
     private Image imagen;
@@ -36,8 +36,7 @@ public class PanelProducto {
             ImageIcon icon = new ImageIcon(
                     getClass().getResource(rutaImagen)
             );
-            imagen = icon.getImage()
-                    .getScaledInstance(ANCHO, ALTO, Image.SCALE_SMOOTH);
+            imagen = icon.getImage();
         } catch (Exception e) {
             System.out.println("No se pudo cargar imagen: " + rutaImagen);
             imagen = null;
@@ -57,6 +56,28 @@ public class PanelProducto {
     }
 
     public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+
+        if (imagen != null) {
+
+            g2.drawImage(imagen, x-12, y-7,ANCHO+13, ALTO+13, null);
+        } else {
+
+            g2.setColor(color);
+            g2.fillRoundRect(x, y, ANCHO, ALTO, 5, 5);
+
+
+            g2.setColor(color.darker());
+            g2.setStroke(new BasicStroke(2));
+            g2.drawRoundRect(x, y, ANCHO, ALTO, 5, 5);
+
+
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Arial", Font.BOLD, 11));
+            g2.drawString("#" + numSerie, x + 5, y + 48);
+        }
     }
 }
 /**
