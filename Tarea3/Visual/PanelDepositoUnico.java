@@ -10,7 +10,7 @@ import java.awt.*;
  */
 public class PanelDepositoUnico {
     private int x, y;
-    private static final int ANCHO = 75, ALTO = 75;
+    private static final int ANCHO = 115, ALTO = 75;
     private Producto producto;
     private PanelProducto vistaProducto;
 
@@ -35,12 +35,32 @@ public class PanelDepositoUnico {
         this.producto = p;
 
         if (p != null) {
+            // Detectar qué tipo de producto es para cargar la imagen correcta
+            String claseProducto = p.getClass().getSimpleName().toLowerCase();
+            String ruta = "/imagenes/producto.png";
+
+            if (claseProducto.contains("coca")){
+                ruta = "/imagenes/coca.png";
+            }
+            else if (claseProducto.contains("sprite")){
+                ruta = "/imagenes/sprite.png";
+            }
+            else if (claseProducto.contains("fanta")){
+                ruta = "/imagenes/fanta.png";
+            }
+            else if (claseProducto.contains("super")){
+                ruta = "/imagenes/super.png";
+            }
+            else if (claseProducto.contains("snicker")){
+                ruta = "/imagenes/snicker.png";
+            }
+
             vistaProducto = new PanelProducto(
-                    x + 5,
-                    y + 20,
+                    x + 38,
+                    y + 8,
                     p.getSerie(),
                     new Color(80, 160, 80),
-                    "/imagenes/producto.png"
+                    ruta
             );
         } else {
             vistaProducto = null;
@@ -68,12 +88,15 @@ public class PanelDepositoUnico {
 
         // etiqueta
         g2.setColor(Color.DARK_GRAY);
-        g2.setFont(new Font("Arial", Font.BOLD, 10));
+        g2.setFont(new Font("Arial", Font.BOLD, 12));
         g2.drawString("Retiro", x + 5, y + 14);
 
         // dibujar producto si hay uno listo
         if (vistaProducto != null) {
             vistaProducto.paintComponent(g);
+            g2.setColor(new Color(0,0,0, 180));
+            g2.setFont(new Font("Arial",Font.PLAIN,12));
+            g2.drawString("#"+producto.getSerie(), x+45, y+60);
         }
     }
 }
