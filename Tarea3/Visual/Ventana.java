@@ -6,7 +6,7 @@ import java.awt.*;
 public class Ventana extends JFrame {
     public Ventana() {
         setTitle("Expendedor");
-        setSize(900, 650);
+        setSize(1050, 970);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -19,6 +19,6 @@ public class Ventana extends JFrame {
     }
 
     public static void main(String[] args) {
-        new Ventana(); // solo esto en el main
+        new Ventana();
     }
 }

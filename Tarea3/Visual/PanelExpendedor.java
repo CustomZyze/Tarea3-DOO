@@ -51,35 +51,34 @@ public class PanelExpendedor {
         try {
             ImageIcon icon = new ImageIcon(
                     getClass().getResource("/imagenes/expendedor_vacio.png"));
-            imagenFondo = icon.getImage()
-                    .getScaledInstance(ANCHO, ALTO, Image.SCALE_SMOOTH);
+            imagenFondo = icon.getImage();
         } catch (Exception e) {
             imagenFondo = null;
         }
 
         // depósitos con posiciones relativas al expendedor
         depCoca = new PanelDeposito(
-                x + 20, y + 70, 230, 60,
+                x + 97, y + 85, 176, 70,
                 exp.getCoca(), "Coca $1000", new Color(220, 50, 50)
         );
 
         depSprite = new PanelDeposito(
-                x + 20, y + 310, 230, 60,
+                x + 97, y + 317, 176, 70,
                 exp.getSprite(), "Sprite $800", new Color(50, 180, 50)
         );
 
         depFanta = new PanelDeposito(
-                x + 20, y + 185, 230, 60,
+                x + 97, y + 200, 176, 70,
                 exp.getFanta(), "Fanta $800", new Color(255, 140, 0)
         );
 
         depSuper8 = new PanelDeposito(
-                x + 20, y + 500, 230, 60,
+                x + 98, y + 516, 176, 60,
                 exp.getSuper8(), "Super8 $300", new Color(150, 80, 20)
         );
 
         depSnicker = new PanelDeposito(
-                x + 20, y + 410, 230, 60,
+                x + 98, y + 420, 176, 67,
                 exp.getSnicker(), "Snickers $600", new Color(100, 60, 20)
         );
 
@@ -90,7 +89,7 @@ public class PanelExpendedor {
         );
 
         // depósito especial: un solo producto listo para retirar
-        depProductoListo = new PanelDepositoUnico(x + 150, y + 650);
+        depProductoListo = new PanelDepositoUnico(x + 129, y + 654);
     }
 
     /**
@@ -115,7 +114,7 @@ public class PanelExpendedor {
 
         // dibujar cuerpo del expendedor
         if (imagenFondo != null) {
-            g2.drawImage(imagenFondo, imgX, imgY, null);
+            g2.drawImage(imagenFondo, imgX, imgY, ANCHO, ALTO,null);
         } else {
             g2.setColor(new Color(40, 60, 80));
             g2.fillRoundRect(x, y, ANCHO, ALTO, 20, 20);
@@ -150,7 +149,7 @@ public class PanelExpendedor {
      * @param cy coordenada vertical del click.
      */
     public void handleClick(int cx, int cy) {
-        if (cx >= x && cx <= x + ANCHO && cy >= y && cy <= y + ALTO) {
+        if (cx >= x+50 && cx <= x + 350 && cy >= y+50 && cy <= y + 800) {
             rellenarDepositosVacios();
         }
     }
