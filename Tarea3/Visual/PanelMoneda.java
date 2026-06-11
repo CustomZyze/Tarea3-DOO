@@ -75,7 +75,7 @@ public class PanelMoneda {
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         if (imagen != null) {
-            g2.drawImage(imagen, x, y, null);
+            g2.drawImage(imagen, x, y,DIAM, DIAM, null);
         } else {
             // fallback: círculo de color según valor
             Color color = switch (valor) {
