@@ -14,7 +14,7 @@ public class Comprador {
      */
     private String sabor;
     private ArrayList<Moneda> monedero;
-
+    private int generadorSerie = 9000;
     /**
      * Constructor por defecto del Comprador.
      * Inicializa un monedero vacío y el sabor en nulo.
@@ -22,6 +22,10 @@ public class Comprador {
     public Comprador() {
         this.monedero = new ArrayList<>();
         this.sabor = null;
+
+        for (int i = 0; i < 5; i++) {
+            recargarMonedero();
+        }
     }
     /**
      * Intenta comprar un producto en el expendedor especificado usando una moneda.
@@ -39,14 +43,8 @@ public class Comprador {
     public void hacerCompra(Moneda m, Enumeracion cualProducto, Expendedor exp)
             throws PagoIncorrectoException, NoHayProductoException, PagoInsuficienteException{
         this.sabor = null;
-        try {
-            exp.comprarProducto(m,cualProducto);
-        } finally {
-            Moneda vuelto;
-            while ((vuelto = exp.getVuelto()) != null){
-                this.monedero.add(vuelto);
-            }
-        }
+        exp.comprarProducto(m,cualProducto);
+
     }
 
     /**
@@ -60,6 +58,10 @@ public class Comprador {
         if (p != null) {
             this.sabor = p.consumir();
         }
+        Moneda vuelto;
+        while ((vuelto = exp.getVuelto()) != null ){
+            this.monedero.add(vuelto);
+        }
     }
 
     /**
@@ -69,6 +71,21 @@ public class Comprador {
         if (m != null){
             this.monedero.add(m);
         }
+    }
+
+    public Moneda sacarMoneda(int valor) {
+        for (int i = 0; i < monedero.size(); i++) {
+            if (monedero.get(i).getValor() == valor) {
+                return monedero.remove(i);
+            }
+        }
+        return null;
+    }
+
+    public void recargarMonedero() {
+        Moneda nuevaMoneda = new Moneda1000(generadorSerie);
+        this.agregarMoneda(nuevaMoneda);
+        generadorSerie++;
     }
 
     /**
