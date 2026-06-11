@@ -19,7 +19,6 @@ public class PanelProducto {
      * Constructor que inicializa la vista del producto en coordenadas específicas.
      * Intenta cargar la imagen del producto desde la ruta dada; si falla, guarda
      * el color de respaldo para dibujarlo manualmente.
-     *
      * @param x Coordenada X inicial.
      * @param y Coordenada Y inicial.
      * @param numSerie Número de serie único del producto lógico asociado.
@@ -45,8 +44,6 @@ public class PanelProducto {
 
     /**
      * Actualiza las coordenadas de la vista del producto.
-     * Útil para reubicar gráficamente el producto dentro de los depósitos.
-     *
      * @param x Nueva coordenada X.
      * @param y Nueva coordenada Y.
      */
@@ -55,6 +52,13 @@ public class PanelProducto {
         this.y = y;
     }
 
+    /**
+     * Dibuja el producto en la pantalla.
+     * Si la imagen cargó con éxito, la dibuja. Si no
+     * dibuja un rectangulo representativo del
+     * producto con su numero de serie
+     * @param g objeto Graphics utilizado para dibujar el producto.
+     */
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -80,7 +84,3 @@ public class PanelProducto {
         }
     }
 }
-/**
- * Dibuja el producto en la pantalla.
- * Si la imagen cargó con éxito, la dibuja. Si no
- */

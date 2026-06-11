@@ -1,7 +1,6 @@
 package Visual;
 import Logica.Expendedor;
 import Logica.Comprador;
-import Logica.Moneda1000;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -26,7 +25,7 @@ public class PanelPrincipal extends JPanel implements MouseListener {
         setBackground(new Color(85,85,85));
         setLayout(null);
 
-        // crear vistas pasando los modelos lógicos
+
         panelExpendedor = new PanelExpendedor(30, 30, expendedor);
         panelComprador  = new PanelComprador(730, 30, comprador);
 
@@ -39,9 +38,9 @@ public class PanelPrincipal extends JPanel implements MouseListener {
      */
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);  // pinta fondo blanco
-        panelExpendedor.paintComponent(g);  // dibuja expendedor
-        panelComprador.paintComponent(g);   // dibuja comprador
+        super.paintComponent(g);
+        panelExpendedor.paintComponent(g);
+        panelComprador.paintComponent(g);
     }
 
     /**
@@ -53,7 +52,7 @@ public class PanelPrincipal extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         panelExpendedor.handleClick(e.getX(), e.getY());
         panelComprador.handleClick(e.getX(), e.getY(), panelExpendedor);
-        repaint(); // Redibuja la interfaz para reflejar cambios lógicos
+        repaint();
     }
 
     public void mousePressed(MouseEvent e)  {}

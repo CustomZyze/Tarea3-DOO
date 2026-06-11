@@ -13,6 +13,7 @@ public class PanelComprador {
     private static final int ANCHO = 300, ALTO = 880;
     private ArrayList<PanelMoneda> vistasMonedas = new ArrayList<>();
 
+
     private PanelMoneda btn100;
     private PanelMoneda btn500;
     private PanelMoneda btn1000;
@@ -73,6 +74,10 @@ public class PanelComprador {
         btn1000.setDiametro(70);
     }
 
+    /**
+     * Limpia la lista de vistas actuales y crea un nuevo PanelMoneda
+     * por cada moneda existente en el monedero, ubicándolas en filas y columnas.
+     */
     private void actualizarVistasMonedas() {
         vistasMonedas.clear();
         ArrayList<Moneda> monedero = comprador.getMonedero();
@@ -170,14 +175,14 @@ public class PanelComprador {
         g2.drawString("Retirar producto", x + zonaRetiro[0] + 8,
                 y + zonaRetiro[1] + 28);
 
-        // botón recarga
+
         g2.setColor(new Color(140, 180, 140));
         g2.fillRoundRect(x + zonaRecarga[0], y + zonaRecarga[1], zonaRecarga[2], zonaRecarga[3], 10, 10);
         g2.setColor(Color.WHITE);
         g2.drawRoundRect(x + zonaRecarga[0], y + zonaRecarga[1], zonaRecarga[2], zonaRecarga[3], 10, 10);
         g2.drawString("+ Añadir Moneda $1000", x + zonaRecarga[0] + 70, y + zonaRecarga[1] + 28);
 
-        // monedas del monedero
+
         actualizarVistasMonedas();
         g2.setFont(new Font("Arial", Font.BOLD, 15));
         g2.setColor(Color.DARK_GRAY);

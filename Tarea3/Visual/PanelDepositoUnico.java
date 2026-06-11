@@ -5,7 +5,7 @@ import java.awt.*;
 
 /**
  * Clase que representa visualmente un depósito especial para un solo producto.
- * Este depósito se utiliza para mostrar el producto que queda listo para ser retirado
+ * Se utiliza para mostrar el producto que queda listo para ser retirado
  * después de una compra exitosa.
  */
 public class PanelDepositoUnico {
@@ -16,7 +16,6 @@ public class PanelDepositoUnico {
 
     /**
      * Constructor que define la posición del depósito único dentro del panel.
-     *
      * @param x coordenada horizontal donde se dibuja el depósito.
      * @param y coordenada vertical donde se dibuja el depósito.
      */
@@ -28,14 +27,12 @@ public class PanelDepositoUnico {
     /**
      * Coloca un producto en el depósito especial y crea su vista gráfica.
      * Si el producto recibido es {@code null}, el depósito queda vacío.
-     *
      * @param p producto que se mostrará en el depósito de retiro.
      */
     public void setProducto(Producto p) {
         this.producto = p;
 
         if (p != null) {
-            // Detectar qué tipo de producto es para cargar la imagen correcta
             String claseProducto = p.getClass().getSimpleName().toLowerCase();
             String ruta = "/imagenes/producto.png";
 
@@ -70,7 +67,6 @@ public class PanelDepositoUnico {
     /**
      * Dibuja el depósito único en pantalla, incluyendo su fondo, borde,
      * etiqueta y el producto si existe uno listo para retirar.
-     *
      * @param g objeto gráfico utilizado para dibujar el depósito.
      */
     public void paintComponent(Graphics g) {
@@ -78,7 +74,6 @@ public class PanelDepositoUnico {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // fondo amarillo para distinguirlo
         g2.setColor(new Color(240, 200, 100, 200));
         g2.fillRoundRect(x, y, ANCHO, ALTO, 10, 10);
 
@@ -86,12 +81,10 @@ public class PanelDepositoUnico {
         g2.setStroke(new BasicStroke(2));
         g2.drawRoundRect(x, y, ANCHO, ALTO, 10, 10);
 
-        // etiqueta
         g2.setColor(Color.DARK_GRAY);
         g2.setFont(new Font("Arial", Font.BOLD, 12));
         g2.drawString("Retiro", x + 5, y + 14);
 
-        // dibujar producto si hay uno listo
         if (vistaProducto != null) {
             vistaProducto.paintComponent(g);
             g2.setColor(new Color(0,0,0, 180));

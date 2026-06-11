@@ -53,7 +53,6 @@ public class PanelMoneda {
     /**
      * Reposiciona la moneda dentro del depósito.
      * Se debe llamar cada vez que se agrega o saca una moneda del depósito.
-     *
      * @param x nueva coordenada horizontal de la moneda.
      * @param y nueva coordenada vertical de la moneda.
      */
@@ -63,10 +62,9 @@ public class PanelMoneda {
     }
 
     /**
-     * Dibuja la moneda en pantalla.
-     * Si existe una imagen cargada, la dibuja. En caso contrario,
-     * dibuja un círculo de respaldo con el valor de la moneda.
-     *
+     * Si existe una imagen cargada, Dibuja la moneda en pantalla.
+     * En caso contrario, dibuja un círculo de respaldo con el
+     * valor de la moneda.
      * @param g objeto gráfico utilizado para dibujar la moneda.
      */
     public void paintComponent(Graphics g) {
@@ -77,7 +75,7 @@ public class PanelMoneda {
         if (imagen != null) {
             g2.drawImage(imagen, x, y,DIAM, DIAM, null);
         } else {
-            // fallback: círculo de color según valor
+
             Color color = switch (valor) {
                 case 100  -> new Color(200, 200, 200); // gris
                 case 500  -> new Color(210, 170, 50);  // dorado
@@ -91,13 +89,13 @@ public class PanelMoneda {
             g2.setColor(color.darker());
             g2.drawOval(x, y, DIAM, DIAM);
 
-            // valor encima
+
             g2.setColor(Color.WHITE);
             g2.setFont(new Font("Arial", Font.BOLD, 8));
             g2.drawString("$" + valor, x + 2, y + 18);
         }
 
-        // número de serie
+
         if (numSerie > 0) {
             g2.setColor(new Color(0, 0, 0, 180));
             g2.setFont(new Font("Arial", Font.PLAIN, 12));

@@ -5,20 +5,20 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * Clase que representa visualmente el expendedor dentro del panel principal.
- * Se encarga de dibujar la imagen del expendedor, sus depósitos de productos,
+ * Clase que representa visualmente el expendedor dentro del panel principal la
+ * cual se encarga de dibujar la imagen del expendedor, sus depósitos de productos,
  * el depósito de vuelto y el depósito especial donde queda el producto listo
  * para ser retirado.
  */
 public class PanelExpendedor {
-    // posición de los depósitos y posición independiente de la imagen
+
     private int x, y, imgX, imgY;
 
     private static final int ANCHO = 1080, ALTO = 1180;
 
     private Expendedor expendedor;
 
-    // vistas de los depósitos
+
     private PanelDeposito depCoca;
     private PanelDeposito depSprite;
     private PanelDeposito depFanta;
@@ -34,7 +34,6 @@ public class PanelExpendedor {
      * Constructor que inicializa el panel visual del expendedor.
      * Recibe la posición base, el modelo lógico del expendedor y crea
      * todos los depósitos visuales asociados.
-     *
      * @param x coordenada horizontal base para ubicar los depósitos.
      * @param y coordenada vertical base para ubicar los depósitos.
      * @param exp expendedor lógico que contiene los productos, monedas y depósitos.
@@ -47,7 +46,7 @@ public class PanelExpendedor {
         this.imgX = x - 230;
         this.imgY = y - 270;
 
-        // cargar imagen de fondo
+
         try {
             ImageIcon icon = new ImageIcon(
                     getClass().getResource("/imagenes/expendedor_vacio.png"));
@@ -56,7 +55,7 @@ public class PanelExpendedor {
             imagenFondo = null;
         }
 
-        // depósitos con posiciones relativas al expendedor
+
         depCoca = new PanelDeposito(
                 x + 97, y + 85, 176, 70,
                 exp.getCoca(), "Coca $1000", new Color(220, 50, 50)
@@ -82,13 +81,13 @@ public class PanelExpendedor {
                 exp.getSnicker(), "Snickers $600", new Color(100, 60, 20)
         );
 
-        // depósito de vuelto
+
         depVuelto = new PanelDeposito(
                 x + 380, y + 600, 300, 120,
                 exp.getMonVu(), "Vuelto", new Color(200, 200, 50)
         );
 
-        // depósito especial: un solo producto listo para retirar
+
         depProductoListo = new PanelDepositoUnico(x + 129, y + 654);
     }
 
@@ -101,10 +100,9 @@ public class PanelExpendedor {
     }
 
     /**
-     * Dibuja el expendedor completo en pantalla.
-     * Primero dibuja la imagen del expendedor y luego los depósitos,
+     * Dibuja el expendedor completo en pantalla , primero
+     * dibujando la imagen del expendedor y luego los depósitos,
      * el producto listo, el vuelto y el mensaje de estado.
-     *
      * @param g objeto gráfico utilizado para dibujar el expendedor.
      */
     public void paintComponent(Graphics g) {
@@ -112,7 +110,6 @@ public class PanelExpendedor {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // dibujar cuerpo del expendedor
         if (imagenFondo != null) {
             g2.drawImage(imagenFondo, imgX, imgY, ANCHO, ALTO,null);
         } else {
@@ -125,7 +122,6 @@ public class PanelExpendedor {
 
         depProductoListo.setProducto(expendedor.getProductoListo());
 
-        // dibujar todos los depósitos
         depCoca.paintComponent(g);
         depSprite.paintComponent(g);
         depFanta.paintComponent(g);
@@ -134,7 +130,6 @@ public class PanelExpendedor {
         depVuelto.paintComponent(g);
         depProductoListo.paintComponent(g);
 
-        // mensaje de estado
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Arial", Font.BOLD, 14));
         g2.drawString(mensajeEstado, x + 380, y + 590);
@@ -144,7 +139,6 @@ public class PanelExpendedor {
      * Procesa un click dentro del área del expendedor.
      * Si el click ocurre dentro de la zona del expendedor, se rellenan
      * los depósitos vacíos.
-     *
      * @param cx coordenada horizontal del click.
      * @param cy coordenada vertical del click.
      */

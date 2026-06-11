@@ -5,8 +5,6 @@ import java.util.ArrayList;
 /**
  * Clase que representa a un comprador dentro del sistema.
  * El comprador intenta comprar un producto en el expendedor utilizando su dinero (monedero),
- *  * hacer la compra de un producto, recoger el vuelto automáticamente y
- *  * retirar el producto de la máquina para consumirlo.
  */
 public class Comprador {
     /**
@@ -15,9 +13,12 @@ public class Comprador {
     private String sabor;
     private ArrayList<Moneda> monedero;
     private int generadorSerie = 9000;
+
     /**
      * Constructor por defecto del Comprador.
      * Inicializa un monedero vacío y el sabor en nulo.
+     * Con un ciclo rellena 5 monedas de 1000 al
+     * monedero inicialmente.
      */
     public Comprador() {
         this.monedero = new ArrayList<>();
@@ -29,9 +30,8 @@ public class Comprador {
     }
     /**
      * Intenta comprar un producto en el expendedor especificado usando una moneda.
-     * Al terminar el intento (ya sea con exito o error), el comprador recoge
+     * Al terminar el intento , el comprador recoge
      * automáticamente el vuelto de la maquina y lo guarda en su monedero.
-     *
      * @param m Moneda con la que se intentará pagar.
      * @param cualProducto Enumeración que indica el tipo de producto deseado.
      * @param exp El expendedor al cual se le realizará la transacción.
@@ -50,7 +50,6 @@ public class Comprador {
     /**
      * Retira el producto de la ventanilla de la máquina (si hay) y lo consume,
      * guardando su sabor en la memoria del comprador.
-     *
      * @param exp El expendedor del cual se retirará el producto.
      */
     public void retirarProducto(Expendedor exp) {
@@ -73,6 +72,13 @@ public class Comprador {
         }
     }
 
+    /**
+     * Recorre el monedero hasta encontrar una moneda que tenga el mismo valor
+     * recibido por parámetro. Si la encuentra, la elimina del monedero y la retorna.
+     * Si no existe retorna null.
+     * @param valor valor de la moneda que se desea sacar del monedero.
+     * @return la moneda retirada del monedero, o null si no se encuentra.
+     */
     public Moneda sacarMoneda(int valor) {
         for (int i = 0; i < monedero.size(); i++) {
             if (monedero.get(i).getValor() == valor) {
@@ -82,6 +88,11 @@ public class Comprador {
         return null;
     }
 
+    /**
+     * Recarga el monedero agregando una nueva moneda de $1000 luego
+     * crea una moneda con el número de serie actual, la agrega al monedero
+     * y luego aumenta el generador de serie para la próxima moneda.
+     */
     public void recargarMonedero() {
         Moneda nuevaMoneda = new Moneda1000(generadorSerie);
         this.agregarMoneda(nuevaMoneda);
@@ -96,6 +107,10 @@ public class Comprador {
         return monedero;
     }
 
+    /**
+     * Calcula la cantidad total de dinero almacenada en el monedero.
+     * @return el monto total de dinero disponible en el monedero.
+     */
     public int cuantaPlata(){
         int totalPlata = 0;
         for (Moneda m: monedero){

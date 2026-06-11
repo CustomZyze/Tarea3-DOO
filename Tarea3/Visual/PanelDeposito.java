@@ -6,8 +6,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Representación visual de un depósito del expendedor.
- * Puede actuar como contenedor de productos (bebidas/dulces) o como
+ * Representación visual de un depósito del expendedor la cual
+ * puede actuar como contenedor de productos (bebidas o dulces) o como
  * la bandeja de vuelto (monedas), sincronizando su contenido gráfico
  * con un depósito lógico asociado.
  */
